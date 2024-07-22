@@ -4,10 +4,17 @@ import com.hackathonteam2.recomovie.user.dto.LoginRequest;
 import com.hackathonteam2.recomovie.user.entity.User;
 import com.hackathonteam2.recomovie.user.repository.UserRepository;
 import com.hackathonteam2.recomovie.user.service.UserService;
-import jakarta.servlet.http.HttpSession;
+ lsw
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
+ main
 
 @Controller
 @RequiredArgsConstructor
@@ -41,6 +48,9 @@ public class UserController {
         } else{
             return "redirect:/register?error";
         }
+ 
+
+
     }
 
     @PostMapping("/login")
@@ -59,6 +69,7 @@ public class UserController {
     public String logout(HttpSession httpSession){
         httpSession.removeAttribute("loggedInUser");
         return "redirect:/login";
+ 
     }
 
 
