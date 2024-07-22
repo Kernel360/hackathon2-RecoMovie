@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public String addUser(@RequestBody LoginRequest request){
+    public String addUser(@ModelAttribute LoginRequest request){
 
         String loginId = request.getLoginId();
         String password = request.getPassword();
@@ -34,8 +34,9 @@ public class UserController {
         String nickname = request.getNickname();
         String email = request.getEmail();
 
+
         if(!userService.isUserExists(loginId)){
-            User user = new User(loginId,password,name,nickname,email);
+            User user = new User(loginId,password,name,email,nickname);
             userRepository.save(user);
             return "redirect:/login";
         } else{
