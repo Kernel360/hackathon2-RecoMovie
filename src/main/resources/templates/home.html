@@ -177,17 +177,17 @@
     <div class="reviews">
         <div th:each="review : ${reviews}" class="review-card">
             <div class="review-header">
-                <img th:src="${review.imageUrl}" alt="Movie Poster" class="poster">
-                <div class="review-title">
-                    <h3 th:text="${review.title}"></h3>
-                    <p th:text="${review.genres}"></p>
-                </div>
+<!--                <img th:src="${review.imageUrl}" alt="Movie Poster" class="poster">-->
+<!--                <div class="review-title">-->
+<!--                    <h3 th:text="${review.title}"></h3>-->
+<!--                    <p th:text="${review.genres}"></p>-->
+<!--                </div>-->
                 <div class="rating">
                     <p>Rating: <span th:text="${review.rating}">0</span>/5</p>
                 </div>
             </div>
             <div class="review-body">
-                <p th:text="${review.description}"></p>
+                <p th:text="${review.content}"></p>
             </div>
         </div>
     </div>
