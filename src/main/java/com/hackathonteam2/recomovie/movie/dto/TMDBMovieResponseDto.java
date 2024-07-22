@@ -2,8 +2,10 @@ package com.hackathonteam2.recomovie.movie.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hackathonteam2.recomovie.movie.entity.Movie;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -15,9 +17,9 @@ import java.util.List;
 public class TMDBMovieResponseDto {
     private Boolean adult;
     private String backdrop_path;
-    private List<Integer> genre_ids;
+    private List<Long> genre_ids;
     @JsonProperty("id")
-    private Integer movie_id;
+    private Long movie_id;
     private String original_language;
     private String original_title;
     private String overview;
@@ -28,4 +30,15 @@ public class TMDBMovieResponseDto {
     private Boolean video;
     private Double vote_average;
     private Integer vote_count;
+
+    public Movie toEntity() {
+        return Movie.builder()
+                .movieId(movie_id)
+                .title(title)
+                .overview(overview)
+                .releaseDate(release_date)
+                .poster(poster_path)
+                .genres(new ArrayList<>())
+                .build();
+    }
 }

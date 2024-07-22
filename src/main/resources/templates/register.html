@@ -2,38 +2,122 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Register</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <style>
+        /* 기본 리셋 및 폰트 설정 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+
+        .register-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="password"], input[type="email"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 1rem;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            margin-top: 1rem;
+            color: red;
+            text-align: center;
+        }
+
+        .login-link {
+            display: block;
+            margin-top: 1rem;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .login-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<h1>Register</h1>
-<form th:action="@{/addUser}" method="post">
-    <div>
-        <label for="loginId">Login ID:</label>
-        <input type="text" id="loginId" name="loginId" required>
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-    </div>
-    <div>
-        <label for="nickname">Nickname:</label>
-        <input type="text" id="nickname" name="nickname" required>
-    </div>
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-    </div>
-    <button type="submit">Register</button>
-</form>
-
-<div th:if="${param.error}">
-    <p style="color: red;">User already exists or registration failed. Please try again.</p>
+<div class="container">
+    <h1>Register</h1>
+    <form th:action="@{/addUser}" method="post" class="register-form">
+        <div class="form-group">
+            <label for="loginId">Login ID:</label>
+            <input type="text" id="loginId" name="loginId" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="nickname">Nickname:</label>
+            <input type="text" id="nickname" name="nickname" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <button type="submit">Register</button>
+        <div th:if="${param.error}" class="error-message">
+            <p>User already exists or registration failed. Please try again.</p>
+        </div>
+    </form>
+    <a href="/login" class="login-link">Already have an account? Login here.</a>
 </div>
-
-<a href="/login">Already have an account? Login here.</a>
 </body>
 </html>
