@@ -56,10 +56,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/home")
-    public String hompage(){
-        return "home";
-    }
+
 
     @PostMapping("/login")
     public String login(@RequestParam String loginId, @RequestParam String password, HttpSession httpSession){
