@@ -1,5 +1,6 @@
 package com.hackathonteam2.recomovie.review.controller;
 
+import com.hackathonteam2.recomovie.review.dto.ReviewRequest;
 import com.hackathonteam2.recomovie.review.service.ReviewService;
 import com.hackathonteam2.recomovie.user.entity.User;
 import jakarta.servlet.http.HttpSession;
@@ -21,13 +22,13 @@ public class ReviewController {
 
     @PostMapping("reviews/write")
     public String writeReview(
-            @RequestParam String content,
-            @RequestParam int rating
+            @ModelAttribute ReviewRequest request
     , HttpSession httpSession){
         User user = (User) httpSession.getAttribute("loggedInUser");
         if(user != null){
             String loginId = user.getLoginId();
-            reviewService.writeReview(loginId,content,rating);
+            System.out.println("request = " + request);
+//            reviewService.writeReview(loginId,content,rating);
             return "redirect:/home";
         } else {
             return "redirect:/login?error";
