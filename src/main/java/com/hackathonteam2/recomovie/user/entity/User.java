@@ -32,7 +32,11 @@ public class User {
 
     @NonNull
     @Column
-    private String createdDate;
+    private String nickname;
+
+//    @NonNull
+//    @Column
+//    private String createdDate;
 
     @Column
     private String role;
@@ -43,9 +47,13 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
+        this.nickname = nickname;
+
     }
 
+
     public User() {
+
     }
 }
 

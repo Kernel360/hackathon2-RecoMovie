@@ -4,17 +4,17 @@ import com.hackathonteam2.recomovie.user.dto.LoginRequest;
 import com.hackathonteam2.recomovie.user.entity.User;
 import com.hackathonteam2.recomovie.user.repository.UserRepository;
 import com.hackathonteam2.recomovie.user.service.UserService;
- lsw
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
- main
+
 
 @Controller
 @RequiredArgsConstructor
@@ -26,6 +26,10 @@ public class UserController {
     public String showLoginPage(){
         return "login";
     }
+    @GetMapping("/")
+    public String loginHome(){
+        return "login";
+    }
 
     @GetMapping("/register")
     public String showRegisterPage() {
@@ -33,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public String addUser(@RequestBody LoginRequest request){
+    public String addUser(@ModelAttribute LoginRequest request){
 
         String loginId = request.getLoginId();
         String password = request.getPassword();
@@ -41,16 +45,20 @@ public class UserController {
         String nickname = request.getNickname();
         String email = request.getEmail();
 
+
         if(!userService.isUserExists(loginId)){
-            User user = new User(loginId,password,name,nickname,email);
+            User user = new User(loginId,password,name,email,nickname);
             userRepository.save(user);
             return "redirect:/login";
         } else{
             return "redirect:/register?error";
         }
- 
+    }
 
 
+    @GetMapping("/home")
+    public String hompage(){
+        return "home";
     }
 
     @PostMapping("/login")
@@ -67,7 +75,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout(HttpSession httpSession){
-        httpSession.removeAttribute("loggedInUser");
+        httpSession.invalidate();
         return "redirect:/login";
  
     }
