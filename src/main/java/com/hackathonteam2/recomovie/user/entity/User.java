@@ -1,9 +1,12 @@
 package com.hackathonteam2.recomovie.user.entity;
 
+import com.hackathonteam2.recomovie.review.entity.Review;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Entity
 @Table
@@ -32,7 +35,14 @@ public class User {
 
     @NonNull
     @Column
-    private String createdDate;
+    private String nickname;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Review> reviews;
+
+//    @NonNull
+//    @Column
+//    private String createdDate;
 
     @Column
     private String role;
@@ -43,9 +53,13 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
+        this.nickname = nickname;
+
     }
 
+
     public User() {
+
     }
 }
 
