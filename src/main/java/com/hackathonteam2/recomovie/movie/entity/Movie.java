@@ -37,10 +37,15 @@ public class Movie {
     @OneToMany(mappedBy = "movie")
     private List<MovieGenre> genres;
 
+    @Column(name = "popularity")
+    private Double popularity;
+
     public void addGenre(Genre genre) {
-        MovieGenre movieGenre = new MovieGenre();
-        movieGenre.setMovie(this);
-        movieGenre.setGenre(genre);
-        genres.add(movieGenre);
+        genres.add(
+                MovieGenre.builder()
+                        .movie(this)
+                        .genre(genre)
+                        .build()
+        );
     }
 }

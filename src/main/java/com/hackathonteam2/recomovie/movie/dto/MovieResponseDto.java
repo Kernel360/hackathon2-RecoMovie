@@ -22,6 +22,7 @@ public class MovieResponseDto {
     private String releaseDate;
     private String poster;
     private List<String> genres;
+    private Double popularity;
     public static MovieResponseDto of(Movie movie) {
         return MovieResponseDto.builder()
                 .movieId(movie.getMovieId())
@@ -32,6 +33,7 @@ public class MovieResponseDto {
                 .genres(movie.getGenres().stream()
                         .map(g->g.getGenre().getName())
                         .toList())
+                .popularity(movie.getPopularity())
                 .build();
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -40,7 +41,7 @@ public class TMDBService {
             totalPages = Integer.parseInt(rootNode.get("total_pages").asText());
             movieList.addAll(parse(rootNode.findPath("results")));
         } while(page<totalPages);
-
+        movieList.sort(Comparator.comparingDouble(TMDBMovieResponseDto::getPopularity));
         return movieList;
     }
 

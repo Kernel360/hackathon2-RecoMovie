@@ -24,6 +24,7 @@ public class MovieService {
     public List<MovieResponseDto> search(String keyword) {
         return movieRepository.search(keyword).stream()
                 .map(MovieResponseDto::of)
+                .sorted((i,j)->Double.compare(j.getPopularity(),i.getPopularity()))
                 .toList();
     }
 
