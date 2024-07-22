@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>계층형 드랍다운</title>
+</head>
+<body>
+<h1>계층형 드랍다운</h1>
+
+<select id="brand-dropdown">
+    <option value="">Select a brand</option>
+</select>
+
+<select id="region-dropdown" disabled>
+    <option value="">Select a region</option>
+</select>
+
+<select id="cinema-dropdown" disabled>
+    <option value="">Select a cinema</option>
+</select>
+
+<script>
+    // 데이터 저장용 변수
+    let cinemaData = [];
+    let regionData = {};
+    let cinemaMap = {};
+
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/api/cinema/list')  // 요청 URL 수정
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                cinemaData = data;
+                populateBrandDropdown(data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    });
+
+    function populateBrandDropdown(data) {
+        let brandDropdown = document.getElementById("brand-dropdown");
+        let brands = new Set();
+
+        data.forEach(cinema => {
+            brands.add(cinema.brand);
+            if (!regionData[cinema.brand]) {
+                regionData[cinema.brand] = new Set();
+                cinemaMap[cinema.brand] = {}; // Initialize cinema map for each brand
+            }
+            regionData[cinema.brand].add(cinema.region);
+            if (!cinemaMap[cinema.brand][cinema.region]) {
+                cinemaMap[cinema.brand][cinema.region] = [];
+            }
+            cinemaMap[cinema.brand][cinema.region].push(cinema.name);
+        });
+
+        brands.forEach(brand => {
+            let option = document.createElement("option");
+            option.value = brand;
+            option.textContent = brand;
+            brandDropdown.appendChild(option);
+        });
+
+        brandDropdown.addEventListener('change', function() {
+            updateRegionDropdown(this.value);
+            updateCinemaDropdown(null); // Reset cinema dropdown
+        });
+    }
+
+    function updateRegionDropdown(selectedBrand) {
+        let regionDropdown = document.getElementById("region-dropdown");
+        regionDropdown.innerHTML = '<option value="">Select a region</option>';  // 초기 옵션
+
+        if (selectedBrand && regionData[selectedBrand]) {
+            regionData[selectedBrand].forEach(region => {
+                let option = document.createElement("option");
+                option.value = region;
+                option.textContent = region;
+                regionDropdown.appendChild(option);
+            });
+            regionDropdown.disabled = false;
+        } else {
+            regionDropdown.disabled = true;
+        }
+
+        // Reset cinema dropdown
+        updateCinemaDropdown(null);
+    }
+
+    function updateCinemaDropdown(selectedRegion) {
+        let cinemaDropdown = document.getElementById("cinema-dropdown");
+        cinemaDropdown.innerHTML = '<option value="">Select a cinema</option>';  // 초기 옵션
+
+        let selectedBrand = document.getElementById("brand-dropdown").value;
+        if (selectedBrand && selectedRegion && cinemaMap[selectedBrand] && cinemaMap[selectedBrand][selectedRegion]) {
+            cinemaMap[selectedBrand][selectedRegion].forEach(cinema => {
+                let option = document.createElement("option");
+                option.value = cinema;
+                option.textContent = cinema;
+                cinemaDropdown.appendChild(option);
+            });
+            cinemaDropdown.disabled = false;
+        } else {
+            cinemaDropdown.disabled = true;
+        }
+    }
+
+    document.getElementById("region-dropdown").addEventListener('change', function() {
+        updateCinemaDropdown(this.value);
+    });
+</script>
+
+</body>
+</html>
