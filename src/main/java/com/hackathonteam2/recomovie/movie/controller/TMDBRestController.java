@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,9 +24,8 @@ public class TMDBRestController {
     @GetMapping("/search")
     public  List<MovieResponseDto> search(@RequestParam(name = "keyword") String keyword) throws JsonProcessingException {
         List<TMDBMovieResponseDto> list = tmdbService.getByKeyword(keyword);
-        System.out.println("list = " + list);
         return list.stream()
-                .map(movieService::addMovie)
+                .map(movieService::addMovieFromTMDB)
                 .toList();
     }
 

@@ -2,21 +2,311 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Write Review</title>
+    <style>
+        /* 팝업 스타일 */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background-color: white;
+            border: 2px solid black;
+            z-index: 1000;
+            overflow: auto;
+        }
+        .popup-content {
+            padding: 20px;
+        }
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid black;
+            padding-bottom: 10px;
+        }
+        .popup-body {
+            margin-top: 20px;
+        }
+        .popup-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
 </head>
 <body>
 <h1>Write a Review</h1>
 <form action="/reviews/write" method="post">
     <div>
-        <label for="content">Content:</label>
-        <textarea id="content" name="content" rows="4" cols="50" required></textarea>
+        <label for="brand-dropdown"></label>
+        <select id="brand-dropdown">
+            <option value="">영화관 브랜드 선택</option>
+        </select>
+        <label for="region-dropdown"></label>
+        <select id="region-dropdown" disabled>
+            <option value="">지역 선택</option>
+        </select>
+        <label for="cinema-dropdown"></label>
+        <select id="cinema-dropdown" disabled>
+            <option value="">영화관 선택</option>
+        </select>
+    </div>
+    <div>
+        <label for="cinema-review"></label>
+        <textarea id="cinema-review" name="cinema-review" rows="6" cols="70" required placeholder="영화관을 리뷰해주세요"></textarea>
+    </div>
+    <div>
+        <label for="movie-selection"></label>
+        <div id="movie-selection">
+            <button type="button" onclick="openPopup()">Select Movie</button>
+        </div>
+        <input type="hidden" id="movieTitle" name="movieTitle">
+        <input type="hidden" id="moviePoster" name="moviePoster">
+    </div>
+    <div>
+        <label for="content"></label>
+        <textarea id="content" name="content" rows="6" cols="70" required placeholder="영화를 리뷰해주세요"></textarea>
     </div>
     <div>
         <label for="rating">Rating:</label>
         <input type="number" id="rating" name="rating" min="1" max="5" required>
     </div>
     <div>
-        <button type="submit">Submit Review</button>
+        <button type="submit">리뷰 작성</button>
     </div>
 </form>
+
+<!-- 팝업 오버레이 -->
+<div class="popup-overlay" id="popupOverlay"></div>
+
+<!-- 팝업 창 -->
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <div class="popup-header">
+            <h2>영화 선택</h2>
+            <button type="button" onclick="closePopup()">창 닫기</button>
+        </div>
+        <div class="popup-body">
+            <input type="text" id="movieSearchInput" placeholder="영화 제목을 입력해주세요" oninput="searchMovies('movie/search?keyword=')">
+            <button type="button" onclick="additionalSearch()">추가 검색</button>
+            <div id="movieResults"></div>
+        </div>
+        <div class="popup-footer">
+            <button type="button" onclick="closePopup()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 팝업 열기
+    function openPopup() {
+        document.getElementById('popup').style.display = 'block';
+        document.getElementById('popupOverlay').style.display = 'block';
+    }
+
+    // 팝업 닫기
+    function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+        document.getElementById('popupOverlay').style.display = 'none';
+    }
+
+    // 영화 검색
+    async function searchMovies(apiEndpoint) {
+        const query = document.getElementById('movieSearchInput').value;
+        const movieResults = document.getElementById('movieResults');
+
+        if (query.length < 2) {
+            movieResults.innerHTML = '<p>두글자 이상 입력해주세요.</p>';
+            return;
+        }
+
+        try {
+            const response = await fetch(`${apiEndpoint}${encodeURIComponent(query)}`);
+            const movies = await response.json();
+
+            // 검색 결과 표시
+            movieResults.innerHTML = '';
+            if (movies.length > 0) {
+                movies.forEach(movie => {
+                    const movieDiv = document.createElement('div');
+                    movieDiv.innerHTML = `
+                        <div>
+                            <img src="${movie.poster}" alt="${movie.title}" width="50">
+                            <button type="button" onclick="selectMovie('${movie.title}', '${movie.poster}')">Select</button>
+                        </div>
+                        <div>
+                            <span><strong>${movie.title}</strong></span><br>
+                            <span><em>${movie.genres.join(', ')}</em></span><br>
+                            <p>${movie.overview}</p>
+
+                        </div>
+                    `;
+                    movieResults.appendChild(movieDiv);
+                });
+            } else {
+                movieResults.innerHTML = '<p>No movies found.</p>';
+            }
+        } catch (error) {
+            console.error('Error searching movies:', error);
+            movieResults.innerHTML = '<p>Error searching movies. Please try again later.</p>';
+        }
+    }
+
+    // 추가 검색
+    async function additionalSearch() {
+        const query = document.getElementById('movieSearchInput').value;
+        const movieResults = document.getElementById('movieResults');
+
+        if (query.length < 2) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`tmdb/search?keyword=${encodeURIComponent(query)}`);
+            const movies = await response.json();
+
+            // 검색 결과 맨 위에 추가
+            if (movies.length > 0) {
+                movies.forEach(movie => {
+                    const movieDiv = document.createElement('div');
+                    movieDiv.innerHTML = `
+                        <div>
+                            <img src="${movie.poster}" alt="${movie.title}" width="50">
+                            <button type="button" onclick="selectMovie('${movie.title}', '${movie.poster}')">Select</button>
+                        </div>
+                        <div>
+                            <span><strong>${movie.title}</strong></span><br>
+                            <span><em>${movie.genres.join(', ')}</em></span><br>
+                            <p>${movie.overview}</p>
+
+                        </div>
+                    `;
+                    movieResults.insertBefore(movieDiv, movieResults.firstChild);
+                });
+            }
+        } catch (error) {
+            console.error('Error searching additional movies:', error);
+        }
+    }
+
+    // 영화 선택
+    function selectMovie(title, poster) {
+        document.getElementById('movieTitle').value = title;
+        document.getElementById('moviePoster').value = poster;
+        document.getElementById('movie-selection').innerHTML = `
+            <img src="${poster}" alt="${title}" width="50">
+            <span>${title}</span>
+            <button type="button" onclick="openPopup()">Change Movie</button>
+        `;
+        closePopup();
+    }
+
+    // 데이터 저장용 변수
+    let cinemaData = [];
+    let regionData = {};
+    let cinemaMap = {};
+
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/api/cinema/list')  // 요청 URL 수정
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                cinemaData = data;
+                populateBrandDropdown(data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    });
+
+    function populateBrandDropdown(data) {
+        let brandDropdown = document.getElementById("brand-dropdown");
+        let brands = new Set();
+
+        data.forEach(cinema => {
+            brands.add(cinema.brand);
+            if (!regionData[cinema.brand]) {
+                regionData[cinema.brand] = new Set();
+                cinemaMap[cinema.brand] = {}; // Initialize cinema map for each brand
+            }
+            regionData[cinema.brand].add(cinema.region);
+            if (!cinemaMap[cinema.brand][cinema.region]) {
+                cinemaMap[cinema.brand][cinema.region] = [];
+            }
+            cinemaMap[cinema.brand][cinema.region].push(cinema.name);
+        });
+
+        brands.forEach(brand => {
+            let option = document.createElement("option");
+            option.value = brand;
+            option.textContent = brand;
+            brandDropdown.appendChild(option);
+        });
+
+        brandDropdown.addEventListener('change', function() {
+            updateRegionDropdown(this.value);
+            updateCinemaDropdown(null); // Reset cinema dropdown
+        });
+    }
+
+    function updateRegionDropdown(selectedBrand) {
+        let regionDropdown = document.getElementById("region-dropdown");
+        regionDropdown.innerHTML = '<option value="">Select a region</option>';  // 초기 옵션
+
+        if (selectedBrand && regionData[selectedBrand]) {
+            regionData[selectedBrand].forEach(region => {
+                let option = document.createElement("option");
+                option.value = region;
+                option.textContent = region;
+                regionDropdown.appendChild(option);
+            });
+            regionDropdown.disabled = false;
+        } else {
+            regionDropdown.disabled = true;
+        }
+
+        // Reset cinema dropdown
+        updateCinemaDropdown(null);
+    }
+
+    function updateCinemaDropdown(selectedRegion) {
+        let cinemaDropdown = document.getElementById("cinema-dropdown");
+        cinemaDropdown.innerHTML = '<option value="">Select a cinema</option>';  // 초기 옵션
+
+        let selectedBrand = document.getElementById("brand-dropdown").value;
+        if (selectedBrand && selectedRegion && cinemaMap[selectedBrand] && cinemaMap[selectedBrand][selectedRegion]) {
+            cinemaMap[selectedBrand][selectedRegion].forEach(cinema => {
+                let option = document.createElement("option");
+                option.value = cinema;
+                option.textContent = cinema;
+                cinemaDropdown.appendChild(option);
+            });
+            cinemaDropdown.disabled = false;
+        } else {
+            cinemaDropdown.disabled = true;
+        }
+    }
+
+    document.getElementById("region-dropdown").addEventListener('change', function() {
+        updateCinemaDropdown(this.value);
+    });
+</script>
 </body>
 </html>
