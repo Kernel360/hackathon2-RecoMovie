@@ -14,8 +14,7 @@ import java.util.List;
 @ToString
 public class MovieResponseDto {
 
-    @Value("${image_url}")
-    private static String imageUrl;
+    private final static String imageUrl = "https://image.tmdb.org/t/p/original/";
 
     private Long movieId;
     private String title;
@@ -25,6 +24,7 @@ public class MovieResponseDto {
     private List<String> genres;
     public static MovieResponseDto of(Movie movie) {
         return MovieResponseDto.builder()
+                .movieId(movie.getMovieId())
                 .title(movie.getTitle())
                 .overview(movie.getOverview())
                 .releaseDate(movie.getReleaseDate())

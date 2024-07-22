@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hackathonteam2.recomovie.movie.dto.TMDBMovieResponseDto;
+import com.hackathonteam2.recomovie.movie.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TMDBService {
 
+    private final MovieRepository movieRepository;
     private final RestClient restClient;
     private final ObjectMapper mapper;
 
@@ -71,7 +73,11 @@ public class TMDBService {
     private List<TMDBMovieResponseDto> parse(JsonNode nodes) throws JsonProcessingException {
         List<TMDBMovieResponseDto> responseList = new ArrayList<>();
         for (JsonNode node : nodes) {
-            responseList.add(mapper.treeToValue(node, TMDBMovieResponseDto.class));
+            TMDBMovieResponseDto dto = mapper.treeToValue(node, TMDBMovieResponseDto.class);
+            // 아직 상영하지 않은 영화는 파싱하지 않음
+            // 이미 db에 있는 영화도 파싱하지 않음
+            if(!dto.getRelease_date().isEmpty()&&movieRepository.findByMovieId(dto.getMovie_id())==null)
+                responseList.add(dto);
         }
         return responseList;
     }
