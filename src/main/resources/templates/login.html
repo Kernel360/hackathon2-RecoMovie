@@ -2,26 +2,109 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <style>
+        /* 기본 리셋 및 폰트 설정 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .submit-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            margin-top: 1rem;
+            color: red;
+            text-align: center;
+        }
+
+        .register-link {
+            display: block;
+            margin-top: 1rem;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<h1>Login</h1>
-<form th:action="@{/login}" method="post">
-    <div>
-        <label for="loginId">Login ID:</label>
-        <input type="text" id="loginId" name="loginId" required>
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <button type="submit">Login</button>
-</form>
-
-<div th:if="${param.error}">
-    <p style="color: red;">Invalid login credentials. Please try again.</p>
+<div class="container">
+    <h1>Login</h1>
+    <form th:action="@{/login}" method="post" class="login-form">
+        <div class="form-group">
+            <label for="loginId">Login ID:</label>
+            <input type="text" id="loginId" name="loginId" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="submit-button">Login</button>
+        <div th:if="${param.error}" class="error-message">
+            <p>Invalid login credentials. Please try again.</p>
+        </div>
+    </form>
+    <a href="/register" class="register-link">Don't have an account? Register here.</a>
 </div>
-
-<a href="/register">Don't have an account? Register here.</a>
 </body>
 </html>
