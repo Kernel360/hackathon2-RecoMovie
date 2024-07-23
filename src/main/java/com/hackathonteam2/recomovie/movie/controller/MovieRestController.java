@@ -18,12 +18,6 @@ import java.util.List;
 public class MovieRestController {
 
     private final MovieService movieService;
-    private final TMDBService tmdbService;
-
-    @GetMapping("/get-all-data")
-    public String getAllData() throws JsonProcessingException {
-        return tmdbService.getByPeriod("2024-01-15", "2024-01-15").toString();
-    }
 
     @GetMapping("/search")
     public List<MovieResponseDto> search(@RequestParam(name = "keyword") String keyword) {
