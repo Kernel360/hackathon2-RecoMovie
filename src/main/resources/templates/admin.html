@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지</title>
+    <script>
+        async function submitForm(event) {
+            event.preventDefault(); // 폼의 기본 제출 동작을 방지
+
+            // 폼 데이터 수집
+            const form = event.target;
+            const formData = new URLSearchParams(new FormData(form));
+
+            try {
+                // 비동기 요청
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formData.toString()
+                });
+
+                // 응답 처리
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                const result = await response.json();
+                const listSize = result.length;
+
+                // 알림창으로 리스트 개수 표시
+                alert(`Received list with ${listSize} items`);
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        }
+
+        async function initDatabase() {
+            try {
+                // 비동기 요청
+                const response = await fetch('/admin/init', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                // 응답 처리
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                const result = await response.text();
+
+                // 확인창으로 응답 메시지 표시
+                alert(result);
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>관리자 페이지</h1>
+<button onclick="initDatabase()">영화관 정보, 장르 정보 초기화</button>
+<br><br>
+<form id="periodForm" action="/admin/save-in-period" method="post" onsubmit="submitForm(event)">
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date" name="start_date" required>
+
+    <br><br>
+
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date" name="end_date" required>
+
+    <br><br>
+
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>

@@ -24,10 +24,14 @@ public class TMDBRestController {
     @GetMapping("/search")
     public  List<MovieResponseDto> search(@RequestParam(name = "keyword") String keyword) throws JsonProcessingException {
         List<TMDBMovieResponseDto> list = tmdbService.getByKeyword(keyword);
-        System.out.println("list = " + list);
         return list.stream()
                 .map(movieService::addMovieFromTMDB)
                 .toList();
+    }
+
+    @GetMapping("/get-all-data")
+    public String getAllData() throws JsonProcessingException {
+        return tmdbService.getByPeriod("2024-01-15", "2024-01-15").toString();
     }
 
 }

@@ -28,15 +28,18 @@ public class GenreService {
         return genreRepository.findByGenreId(genreId);
     }
 
+    // 초기 장르 설정을 위한 메소드 init, parse
     public List<GenreDto> init() throws IOException {
         ClassPathResource resource = new ClassPathResource("json/Genre.json");
         Path path = Paths.get(resource.getURI());
         String json =  new String(Files.readAllBytes(path));
         List<GenreDto> genreList = parse(json);
-        save(genreList);
+        genreList.stream()
+                .filter(g->genreRepository.findByGenreIdAndName(g.getGenreId(),g.getName()).isEmpty())
+                .map(GenreDto::toEntity)
+                .forEach(genreRepository::save);
         return genreList;
     }
-
     private List<GenreDto> parse(String json) throws JsonProcessingException {
         List<GenreDto> genreList = new ArrayList<>();
         JsonNode rootNode = mapper.readTree(json);
@@ -44,11 +47,5 @@ public class GenreService {
             genreList.add(mapper.treeToValue(node, GenreDto.class));
         }
         return genreList;
-    }
-
-    private void save(List<GenreDto> genreList) {
-        genreList.stream()
-                .map(GenreDto::toEntity)
-                .forEach(genreRepository::save);
     }
 }
