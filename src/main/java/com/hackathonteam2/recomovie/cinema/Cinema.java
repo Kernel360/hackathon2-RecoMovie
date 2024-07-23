@@ -1,7 +1,11 @@
 package com.hackathonteam2.recomovie.cinema;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hackathonteam2.recomovie.review.entity.Review;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,4 +26,9 @@ public class Cinema {
 
     @Column(name = "name")
     private String name;
+
+    @JsonIgnore
+    @OneToMany(mappedBy ="cinema")
+    private List<Review> reviews;
+
 }

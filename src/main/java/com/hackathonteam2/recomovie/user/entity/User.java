@@ -1,5 +1,6 @@
 package com.hackathonteam2.recomovie.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hackathonteam2.recomovie.review.entity.Review;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -37,6 +38,7 @@ public class User {
     @Column
     private String nickname;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<Review> reviews;
 

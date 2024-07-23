@@ -25,13 +25,13 @@ public class ReviewController {
     @PostMapping("reviews/write")
     public String writeReview(
             @ModelAttribute ReviewRequest request
-    , HttpSession httpSession){
+            , HttpSession httpSession){
         User user = (User) httpSession.getAttribute("loggedInUser");
         if(user != null){
             String loginId = user.getLoginId();
             System.out.println("request = " + request);
             System.out.println(cinemaService.findId(request.getBrand(),request.getRegion(),request.getCinema()));
-//            reviewService.writeReview(loginId,content,rating);
+            reviewService.writeReview(loginId,request);
             return "redirect:/home";
         } else {
             return "redirect:/login?error";
