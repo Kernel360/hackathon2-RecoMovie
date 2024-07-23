@@ -51,34 +51,33 @@
 <h1>Write a Review</h1>
 <form action="/reviews/write" method="post">
     <div>
-        <label for="brand-dropdown"></label>
-        <select id="brand-dropdown">
+        <label for="brand"></label>
+        <select id="brand" name="brand">
             <option value="">영화관 브랜드 선택</option>
         </select>
-        <label for="region-dropdown"></label>
-        <select id="region-dropdown" disabled>
+        <label for="region"></label>
+        <select id="region" name="region" disabled>
             <option value="">지역 선택</option>
         </select>
-        <label for="cinema-dropdown"></label>
-        <select id="cinema-dropdown" disabled>
+        <label for="cinema"></label>
+        <select id="cinema" name="cinema" disabled>
             <option value="">영화관 선택</option>
         </select>
     </div>
     <div>
         <label for="cinema-review"></label>
-        <textarea id="cinema-review" name="cinema-review" rows="6" cols="70" required placeholder="영화관을 리뷰해주세요"></textarea>
+        <textarea id="cinema-review" name="cinemaReview" rows="6" cols="70" required placeholder="영화관을 리뷰해주세요"></textarea>
     </div>
     <div>
         <label for="movie-selection"></label>
         <div id="movie-selection">
             <button type="button" onclick="openPopup()">Select Movie</button>
         </div>
-        <input type="hidden" id="movieTitle" name="movieTitle">
-        <input type="hidden" id="moviePoster" name="moviePoster">
+        <input type="hidden" id="movieId" name="movieId">
     </div>
     <div>
         <label for="content"></label>
-        <textarea id="content" name="content" rows="6" cols="70" required placeholder="영화를 리뷰해주세요"></textarea>
+        <textarea id="content" name="movieReview" rows="6" cols="70" required placeholder="영화를 리뷰해주세요"></textarea>
     </div>
     <div>
         <label for="rating">Rating:</label>
@@ -145,7 +144,7 @@
                     movieDiv.innerHTML = `
                         <div>
                             <img src="${movie.poster}" alt="${movie.title}" width="50">
-                            <button type="button" onclick="selectMovie('${movie.title}', '${movie.poster}')">Select</button>
+                            <button type="button" onclick="selectMovie('${movie.title}', '${movie.movieId}', '${movie.poster}')">Select</button>
                         </div>
                         <div>
                             <span><strong>${movie.title}</strong></span><br>
@@ -185,7 +184,7 @@
                     movieDiv.innerHTML = `
                         <div>
                             <img src="${movie.poster}" alt="${movie.title}" width="50">
-                            <button type="button" onclick="selectMovie('${movie.title}', '${movie.poster}')">Select</button>
+                            <button type="button" onclick="selectMovie('${movie.title}', '${movie.movieId}', '${movie.poster}')">Select</button>
                         </div>
                         <div>
                             <span><strong>${movie.title}</strong></span><br>
@@ -203,9 +202,8 @@
     }
 
     // 영화 선택
-    function selectMovie(title, poster) {
-        document.getElementById('movieTitle').value = title;
-        document.getElementById('moviePoster').value = poster;
+    function selectMovie(title, movieId, poster) {
+        document.getElementById('movieId').value = movieId;
         document.getElementById('movie-selection').innerHTML = `
             <img src="${poster}" alt="${title}" width="50">
             <span>${title}</span>
@@ -237,7 +235,7 @@
     });
 
     function populateBrandDropdown(data) {
-        let brandDropdown = document.getElementById("brand-dropdown");
+        let brandDropdown = document.getElementById("brand");
         let brands = new Set();
 
         data.forEach(cinema => {
@@ -267,7 +265,7 @@
     }
 
     function updateRegionDropdown(selectedBrand) {
-        let regionDropdown = document.getElementById("region-dropdown");
+        let regionDropdown = document.getElementById("region");
         regionDropdown.innerHTML = '<option value="">Select a region</option>';  // 초기 옵션
 
         if (selectedBrand && regionData[selectedBrand]) {
@@ -287,10 +285,10 @@
     }
 
     function updateCinemaDropdown(selectedRegion) {
-        let cinemaDropdown = document.getElementById("cinema-dropdown");
+        let cinemaDropdown = document.getElementById("cinema");
         cinemaDropdown.innerHTML = '<option value="">Select a cinema</option>';  // 초기 옵션
 
-        let selectedBrand = document.getElementById("brand-dropdown").value;
+        let selectedBrand = document.getElementById("brand").value;
         if (selectedBrand && selectedRegion && cinemaMap[selectedBrand] && cinemaMap[selectedBrand][selectedRegion]) {
             cinemaMap[selectedBrand][selectedRegion].forEach(cinema => {
                 let option = document.createElement("option");
@@ -304,7 +302,7 @@
         }
     }
 
-    document.getElementById("region-dropdown").addEventListener('change', function() {
+    document.getElementById("region").addEventListener('change', function() {
         updateCinemaDropdown(this.value);
     });
 </script>
