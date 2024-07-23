@@ -1,5 +1,6 @@
 package com.hackathonteam2.recomovie.review.controller;
 
+import com.hackathonteam2.recomovie.cinema.CinemaService;
 import com.hackathonteam2.recomovie.review.dto.ReviewRequest;
 import com.hackathonteam2.recomovie.review.service.ReviewService;
 import com.hackathonteam2.recomovie.user.entity.User;
@@ -14,6 +15,7 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
+    private final CinemaService cinemaService;
 
     @GetMapping("/reviews")
     public String showReviewForm(){
@@ -28,6 +30,7 @@ public class ReviewController {
         if(user != null){
             String loginId = user.getLoginId();
             System.out.println("request = " + request);
+            System.out.println(cinemaService.findId(request.getBrand(),request.getRegion(),request.getCinema()));
 //            reviewService.writeReview(loginId,content,rating);
             return "redirect:/home";
         } else {

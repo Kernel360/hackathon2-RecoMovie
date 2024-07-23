@@ -77,7 +77,7 @@ public class TMDBService {
             TMDBMovieResponseDto dto = mapper.treeToValue(node, TMDBMovieResponseDto.class);
             // 아직 상영하지 않은 영화는 파싱하지 않음
             // 이미 db에 있는 영화도 파싱하지 않음
-            if(!dto.getRelease_date().isEmpty()&&movieRepository.findByMovieId(dto.getMovie_id())==null)
+            if(!dto.getRelease_date().isEmpty()&&movieRepository.findByMovieId(dto.getMovie_id()).isEmpty())
                 responseList.add(dto);
         }
         return responseList;
