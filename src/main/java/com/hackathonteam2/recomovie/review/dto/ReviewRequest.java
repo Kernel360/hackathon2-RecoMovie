@@ -1,15 +1,17 @@
 package com.hackathonteam2.recomovie.review.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.hackathonteam2.recomovie.review.entity.Review;
+import com.hackathonteam2.recomovie.user.entity.User;
 import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @ToString
 public class ReviewRequest {
+
     private String brand;
     private String region;
     private String cinema;

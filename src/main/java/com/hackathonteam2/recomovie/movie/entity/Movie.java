@@ -1,5 +1,7 @@
 package com.hackathonteam2.recomovie.movie.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hackathonteam2.recomovie.review.entity.Review;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,6 +38,10 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie")
     private List<MovieGenre> genres;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "movie")
+    private List<Review> reviews;
 
     @Column(name = "popularity")
     private Double popularity;
