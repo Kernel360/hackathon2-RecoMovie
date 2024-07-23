@@ -38,6 +38,7 @@ public class TMDBMovieResponseDto {
                 .overview(overview)
                 .releaseDate(release_date)
                 .poster(poster_path)
+                .popularity(popularity)
                 .genres(new ArrayList<>())
                 .build();
     }
