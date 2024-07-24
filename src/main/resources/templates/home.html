@@ -26,12 +26,14 @@
     <section class="movie-list">
         <h2>Movies</h2>
         <div class="movie-container">
-            <div class="movie-grid" th:each="movie : ${movies}">
+            <div class="movie-grid" th:each="movie : ${response.getNowPlaying()}">
                 <div class="movie-card">
-                    <a th:href="@{'/movie/' + ${movie.movieId}}">
-                        <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${movie.poster}}" alt="Movie Poster" class="poster">
+                    <a th:href="@{'/movie/' + ${movie.getMovie_id()}}">
+                        <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${movie.getPoster_path()}}"
+                             alt="Movie Poster"
+                             class="poster">
                         <div class="movie-details">
-                            <h3 th:text="${movie.title}"></h3>
+                            <h3 th:text="${movie.getTitle()}"></h3>
                         </div>
                     </a>
                 </div>

@@ -1,5 +1,6 @@
 package com.hackathonteam2.recomovie.movie.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,7 +37,7 @@ public class Movie {
 	private String overview;
 
 	@Column(name = "release_date")
-	private String releaseDate;
+	private LocalDate releaseDate;
 
 	@Column(name = "poster")
 	private String poster;

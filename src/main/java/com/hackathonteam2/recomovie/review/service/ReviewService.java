@@ -14,7 +14,6 @@ import com.hackathonteam2.recomovie.review.repository.ReviewRepository;
 import com.hackathonteam2.recomovie.user.entity.User;
 import com.hackathonteam2.recomovie.user.repository.UserRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

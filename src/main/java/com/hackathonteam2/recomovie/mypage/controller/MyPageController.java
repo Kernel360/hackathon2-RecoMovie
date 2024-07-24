@@ -25,20 +25,26 @@ public class MyPageController {
 
 	@GetMapping("/mypage")
 	public String myPage(HttpSession httpSession, Model model) {
-		User user = (User) httpSession.getAttribute("loggedInUser");
+		User user = (User)httpSession.getAttribute("loggedInUser");
+
 		if (user == null) {
 			log.error("User not found in session.");
 			return "errorPage";
 		}
 		log.info("User found: {}", user.getLoginId());
-		List<Review> myReviews = reviewService.getMyReviews(user); // or reviewService.getMyReviewsByUserId(user.getUserId());
+
+		List<Review> myReviews = reviewService.getMyReviews(
+			user); // or reviewService.getMyReviewsByUserId(user.getUserId());
+
 		if (myReviews.isEmpty()) {
 			log.info("No reviews found for user: {}", user.getLoginId());
 		} else {
 			log.info("Reviews found: {}", myReviews);
 		}
+
 		model.addAttribute("user", user);
 		model.addAttribute("myReviews", myReviews);
+
 		return "mypage";
 	}
 }
