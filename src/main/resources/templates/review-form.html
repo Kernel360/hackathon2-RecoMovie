@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Write Review</title>
+    <link th:href="@{/css/review-form-style.css}" rel="stylesheet">
+
+</head>
+<body>
+<header>
+    <h1>Write a Review</h1>
+</header>
+<main>
+    <div class="movie-details">
+        <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${movie.poster}}" alt="Movie Poster">
+        <div>
+            <h2 th:text="${movie.title}">Movie Title</h2>
+            <p><strong>Release Date:</strong> <span th:text="${movie.releaseDate}"></span></p>
+            <p><strong>Popularity:</strong> <span th:text="${movie.popularity}"></span></p>
+        </div>
+    </div>
+    <form action="/reviews/write" method="post">
+        <input type="hidden" name="movieId" th:value="${movieId}"/>
+        <div>
+            <label for="movieReview">Movie Review:</label>
+            <textarea id="movieReview" name="movieReview" rows="6" required placeholder="Write your review about the movie here..."></textarea>
+        </div>
+        <div>
+            <label for="brand">Select Cinema Brand:</label>
+            <select id="brand" name="brand">
+                <option value="">Select Cinema Brand</option>
+            </select>
+        </div>
+        <div>
+            <label for="region">Select Region:</label>
+            <select id="region" name="region" disabled>
+                <option value="">Select Region</option>
+            </select>
+        </div>
+        <div>
+            <label for="cinema">Select Cinema:</label>
+            <select id="cinema" name="cinema" disabled>
+                <option value="">Select Cinema</option>
+            </select>
+        </div>
+        <div>
+            <label for="cinemaReview">Cinema Review:</label>
+            <textarea id="cinemaReview" name="cinemaReview" rows="6" required placeholder="Write your review about the cinema here..."></textarea>
+        </div>
+        <div>
+            <label for="rating">Rating:</label>
+            <input type="number" id="rating" name="rating" min="1" max="5" required>
+        </div>
+        <div>
+            <button type="submit">Submit Review</button>
+        </div>
+    </form>
+</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/api/cinema/list')
+            .then(response => response.json())
+            .then(data => {
+                let brandDropdown = document.getElementById("brand");
+                let regionDropdown = document.getElementById("region");
+                let cinemaDropdown = document.getElementById("cinema");
+
+                let brands = new Set();
+                let regions = {};
+                let cinemas = {};
+
+                data.forEach(cinema => {
+                    brands.add(cinema.brand);
+                    if (!regions[cinema.brand]) regions[cinema.brand] = new Set();
+                    regions[cinema.brand].add(cinema.region);
+                    if (!cinemas[cinema.brand]) cinemas[cinema.brand] = {};
+                    if (!cinemas[cinema.brand][cinema.region]) cinemas[cinema.brand][cinema.region] = [];
+                    cinemas[cinema.brand][cinema.region].push(cinema.name);
+                });
+
+                brands.forEach(brand => {
+                    let option = document.createElement("option");
+                    option.value = brand;
+                    option.textContent = brand;
+                    brandDropdown.appendChild(option);
+                });
+
+                brandDropdown.addEventListener('change', function() {
+                    regionDropdown.innerHTML = '<option value="">Select Region</option>';
+                    cinemaDropdown.innerHTML = '<option value="">Select Cinema</option>';
+                    cinemaDropdown.disabled = true;
+                    if (regions[this.value]) {
+                        regions[this.value].forEach(region => {
+                            let option = document.createElement("option");
+                            option.value = region;
+                            option.textContent = region;
+                            regionDropdown.appendChild(option);
+                        });
+                        regionDropdown.disabled = false;
+                    } else {
+                        regionDropdown.disabled = true;
+                    }
+                });
+
+                regionDropdown.addEventListener('change', function() {
+                    cinemaDropdown.innerHTML = '<option value="">Select Cinema</option>';
+                    if (cinemas[brandDropdown.value] && cinemas[brandDropdown.value][this.value]) {
+                        cinemas[brandDropdown.value][this.value].forEach(cinema => {
+                            let option = document.createElement("option");
+                            option.value = cinema;
+                            option.textContent = cinema;
+                            cinemaDropdown.appendChild(option);
+                        });
+                        cinemaDropdown.disabled = false;
+                    } else {
+                        cinemaDropdown.disabled = true;
+                    }
+                });
+            });
+    });
+</script>
+</body>
+</html>
