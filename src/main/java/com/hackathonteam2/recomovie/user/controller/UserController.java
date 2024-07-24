@@ -1,5 +1,7 @@
 package com.hackathonteam2.recomovie.user.controller;
 
+import java.io.IOException;
+
 import com.hackathonteam2.recomovie.user.dto.LoginRequest;
 import com.hackathonteam2.recomovie.user.entity.User;
 import com.hackathonteam2.recomovie.user.repository.UserRepository;
@@ -11,10 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
 import jakarta.servlet.http.HttpSession;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ public class UserController {
     public String showLoginPage(){
         return "login";
     }
+
     @GetMapping("/")
     public String loginHome(){
         return "login";
@@ -37,7 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public String addUser(@ModelAttribute LoginRequest request){
+    public String addUser(@ModelAttribute LoginRequest request, @RequestParam("profileImage") MultipartFile profileImage) {
 
         String loginId = request.getLoginId();
         String password = request.getPassword();
@@ -45,27 +48,22 @@ public class UserController {
         String nickname = request.getNickname();
         String email = request.getEmail();
 
-
-        if(!userService.isUserExists(loginId)){
-            User user = new User(loginId,password,name,email,nickname);
-            userRepository.save(user);
+        try {
+            userService.createUser(loginId, password, name, email, nickname, profileImage);
             return "redirect:/login";
-        } else{
+        } catch (IllegalArgumentException | IOException e) {
             return "redirect:/register?error";
         }
     }
-
-
-
 
     @PostMapping("/login")
     public String login(@RequestParam String loginId, @RequestParam String password, HttpSession httpSession){
         boolean isLogin = userService.loginService(loginId,password);
         if(isLogin){
             User user = userService.getUserByLoginId(loginId);
-            httpSession.setAttribute("loggedInUser",user);
+            httpSession.setAttribute("loggedInUser", user);
             return "redirect:/home";
-        }else{
+        } else {
             return "redirect:/login?error";
         }
     }
@@ -74,7 +72,6 @@ public class UserController {
     public String logout(HttpSession httpSession){
         httpSession.invalidate();
         return "redirect:/login";
- 
     }
 
 
