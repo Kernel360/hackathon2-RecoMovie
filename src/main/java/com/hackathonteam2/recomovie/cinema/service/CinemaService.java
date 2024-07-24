@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hackathonteam2.recomovie.cinema.dto.CinemaDto;
+import com.hackathonteam2.recomovie.cinema.entity.Cinema;
 import com.hackathonteam2.recomovie.cinema.repository.CinemaRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -25,10 +27,14 @@ public class CinemaService {
 	private final CinemaRepository cinemaRepository;
 	private final ObjectMapper mapper;
 
-	public Long findId(String brand, String region, String name) {
+	public Long findById(String brand, String region, String name) {
 		return cinemaRepository.findByBrandAndRegionAndName(brand, region, name).get().getId();
 	}
 
+	public Cinema findByName(String name) {
+		Optional<Cinema> cinema = cinemaRepository.findByName(name);
+		return cinema.orElse(null);  // return null if not found
+	}
 	public List<CinemaDto> findAll() {
 		return cinemaRepository.findAll().stream()
 			.map(CinemaDto::of)
