@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Details</title>
+    <link th:href="@{/css/movie-detail-style.css}" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="navbar">
+        <div class="logo">
+            <h1>Movie Review Site</h1>
+        </div>
+        <nav>
+            <ul class="menu-right">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/mypage">My Page</a></li>
+                <li><a href="/reviews" class="review-button">Write a Review</a></li>
+                <li><a href="/logout" class="logout-button">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="movie-details">
+        <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${movie.poster}}" alt="Movie Poster" class="movie-poster">
+        <div class="movie-info">
+            <h2 th:text="${movie.title}"></h2>
+            <p><strong>Release Date:</strong> <span th:text="${movie.releaseDate}"></span></p>
+            <p><strong>Overview:</strong> <span th:text="${movie.overview}"></span></p>
+            <p><strong>Popularity:</strong> <span th:text="${movie.popularity}"></span></p>
+            <a th:href="@{/review(movieId=${movie.movieId})}" class="write-review-button">Write a Review</a>
+        </div>
+    </section>
+
+    <section class="reviews">
+        <h2>User Reviews</h2>
+        <div class="review-list" th:each="review : ${reviews}">
+            <div class="review-item">
+                <p><strong>Reviewer:</strong> <span th:text="${review.user.nickname}"></span></p>
+                <p><strong>Rating:</strong> <span th:text="${review.rating}"></span>/5</p>
+                <p><strong>Review:</strong> <span th:text="${review.movieReview}"></span></p>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -10,4 +10,6 @@ import com.hackathonteam2.recomovie.cinema.entity.Cinema;
 @Repository
 public interface CinemaRepository extends JpaRepository<Cinema, Long> {
 	Optional<Cinema> findByBrandAndRegionAndName(String brand, String region, String name);
+
+	Optional<Cinema> findByName(String name);
 }

@@ -23,40 +23,21 @@
 </header>
 
 <main>
-    <h2>Movie Reviews</h2>
-    <!-- 리뷰 작성 버튼 추가 -->
-    <ul class="nav">
-        <li><a href="/reviews" class="review-button">Write a Review</a></li>
-    </ul>
-
-    <!-- 리뷰 작성 버튼 추가 -->
-    <div class="reviews">
-        <div th:each="review : ${reviews}" class="review-card">
-            <div class="review-header">
-                <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${review.movie.poster}}" alt="Movie Poster" class="poster">
-                <div>
-                    <div class="review-title">
-                        <h3 th:text="${review.movie.title}"></h3>
-                        <p th:text="${review.movie.releaseDate}"></p>
-                    </div>
-                    <p th:text="'영화 리뷰 : ' + ${review.movieReview}" class="review-body"></p>
-                    <div class="rating">
-                        <p>총점 <span th:text="${review.rating}">0</span>/5</p>
-                    </div>
+    <section class="movie-list">
+        <h2>Movies</h2>
+        <div class="movie-container">
+            <div class="movie-grid" th:each="movie : ${movies}">
+                <div class="movie-card">
+                    <a th:href="@{'/movie/' + ${movie.movieId}}">
+                        <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${movie.poster}}" alt="Movie Poster" class="poster">
+                        <div class="movie-details">
+                            <h3 th:text="${movie.title}"></h3>
+                        </div>
+                    </a>
                 </div>
             </div>
-            <div class="review-separator"></div>
-            <div class="review-body">
-                <h3 th:text="'영화관: ' + ${review.cinema.brand} + '-' + ${review.cinema.region} + '-' + ${review.cinema.name}" class="review-body"></h3>
-                <p th:text="'영화관 리뷰 : ' + ${review.cinemaReview}" class="review-body"></p>
-
-            </div>
-            <div class="review-separator"></div>
-            <div>
-                <h3 th:text="'작성자: ' + ${review.user.nickname}"></h3>
-            </div>
         </div>
-    </div>
+    </section>
 </main>
 
 <footer>
