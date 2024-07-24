@@ -24,13 +24,14 @@
 
 <main>
     <section class="movie-details">
-        <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${movie.poster}}" alt="Movie Poster" class="movie-poster">
+        <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${movie.getPoster_path()}}" alt="Movie Poster"
+             class="movie-poster">
         <div class="movie-info">
-            <h2 th:text="${movie.title}"></h2>
-            <p><strong>Release Date:</strong> <span th:text="${movie.releaseDate}"></span></p>
-            <p><strong>Overview:</strong> <span th:text="${movie.overview}"></span></p>
-            <p><strong>Popularity:</strong> <span th:text="${movie.popularity}"></span></p>
-            <a th:href="@{/review(movieId=${movie.movieId})}" class="write-review-button">Write a Review</a>
+            <h2 th:text="${movie.getTitle()}"></h2>
+            <p><strong>Release Date:</strong> <span th:text="${movie.getRelease_date()}"></span></p>
+            <p><strong>Overview:</strong> <span th:text="${movie.getOverview()}"></span></p>
+            <p><strong>Popularity:</strong> <span th:text="${movie.getPopularity()}"></span></p>
+            <a th:href="@{/review(movieId=${movie.getMovie_id()})}" class="write-review-button">Write a Review</a>
         </div>
     </section>
 

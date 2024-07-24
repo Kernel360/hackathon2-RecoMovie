@@ -39,7 +39,7 @@ public class ReviewController {
 		@RequestParam Long movieId,
 		HttpSession httpSession) {
 
-		User user = (User) httpSession.getAttribute("loggedInUser");
+		User user = (User)httpSession.getAttribute("loggedInUser");
 
 		if (user != null) {
 			Cinema cinema = cinemaService.findByName(reviewRequest.getCinema());
