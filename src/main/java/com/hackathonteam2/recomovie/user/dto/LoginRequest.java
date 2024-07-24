@@ -10,11 +10,9 @@ import lombok.Setter;
 @Setter
 //@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LoginRequest {
-    private Long userId;
     private String loginId;
     private String password;
     private String name;
     private String nickname;
     private String email;
-
 }

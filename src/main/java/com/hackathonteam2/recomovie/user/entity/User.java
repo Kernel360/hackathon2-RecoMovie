@@ -49,14 +49,16 @@ public class User {
     @Column
     private String role;
 
+    @Column
+    private String profileImageUrl;
 
-    public User( @NonNull String loginId, @NonNull String password, @NonNull String name, @NonNull String email,@NonNull String nickname) {
+    public User(@NonNull String loginId, @NonNull String password, @NonNull String name, @NonNull String email, @NonNull String nickname, String profileImageUrl) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
         this.email = email;
         this.nickname = nickname;
-
+        this.profileImageUrl = profileImageUrl;
     }
 
 
