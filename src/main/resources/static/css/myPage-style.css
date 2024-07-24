@@ -1,4 +1,3 @@
-/* styles.css */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -73,27 +72,48 @@ main {
 }
 
 h2 {
-    font-size: 20px;
+    font-size: 24px;
     margin-bottom: 20px;
+    text-align: center;
 }
 
-.profile-settings, .favorites, .reviews, .posts {
+.profile-settings {
     margin-bottom: 40px;
+}
+
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .profile-info {
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 20px;
 }
 
-.profile-info img {
+.profile-img {
     width: 150px;
     height: 150px;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover; /* 이미지가 크기에 맞게 잘리도록 설정 */
-    border-radius: 50%; /* 이미지를 원형으로 만듭니다 */
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #007bff;
+}
+
+.profile-details {
+    text-align: center;
+}
+
+.profile-details .username,
+.profile-details .email {
+    margin: 10px 0;
+    font-size: 18px;
 }
 
 .profile-btn {
@@ -113,6 +133,7 @@ h2 {
 .movie-list, .review-list, .post-list {
     display: flex;
     gap: 20px;
+    overflow-x: auto; /* 가로 스크롤 추가 */
 }
 
 .movie-item, .review-item, .post-item {
@@ -120,8 +141,10 @@ h2 {
     border-radius: 8px;
     background-color: #fff;
     padding: 15px;
-    flex: 1;
+    flex: 0 0 auto; /* 아이템을 가로로 정렬 */
     text-align: center;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .review-item, .post-item {
@@ -138,6 +161,70 @@ h2 {
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 10px;
+}
+
+.reviews {
+    margin: 20px 0;
+    overflow-x: auto; /* 가로 스크롤 추가 */
+    white-space: nowrap;
+    padding-bottom: 10px;
+}
+
+.review-list {
+    display: inline-flex; /* 가로 정렬 */
+    gap: 20px;
+}
+
+.review-item {
+    flex: 0 0 auto;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    transition: transform 0.3s;
+}
+
+.review-item:hover {
+    transform: translateY(-10px);
+}
+
+.poster {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.review-title {
+    margin-top: 10px;
+}
+
+.review-title h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.review-title p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.review-body {
+    margin: 10px 0;
+    color: #444;
+}
+
+.rating {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .review-item {
+        width: 80%;
+    }
 }
 
 footer {
