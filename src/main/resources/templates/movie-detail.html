@@ -28,9 +28,9 @@
              class="movie-poster">
         <div class="movie-info">
             <h2 th:text="${movie.getTitle()}"></h2>
-            <p><strong>Release Date:</strong> <span th:text="${movie.getRelease_date()}"></span></p>
-            <p><strong>Overview:</strong> <span th:text="${movie.getOverview()}"></span></p>
-            <p><strong>Popularity:</strong> <span th:text="${movie.getPopularity()}"></span></p>
+            <p><strong>개봉일:</strong> <span th:text="${movie.getRelease_date()}"></span></p>
+            <p><strong>상세 설명:</strong> <span th:text="${movie.getOverview()}"></span></p>
+            <p><strong>런타임:</strong> <span th:text="${movie.getRuntime()}"></span> 분</p>
             <a th:href="@{/review(movieId=${movie.getMovie_id()})}" class="write-review-button">Write a Review</a>
         </div>
     </section>

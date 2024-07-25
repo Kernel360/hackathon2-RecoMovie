@@ -28,7 +28,7 @@ public class TMDBDetailsDto {
 
 	private LocalDate release_date;
 
-	private Double popularity;
+	private Integer runtime;
 
 	private String overview;
 }
