@@ -1,5 +1,8 @@
 
+![3333](https://github.com/user-attachments/assets/bd85cf00-5ed0-403d-87f2-9b4918a698b9)
+
 # RecoMovie
+
 
 ---
 
@@ -23,8 +26,10 @@
 ## 산출물
 
 ### 요구사항 명세서
+https://www.notion.so/5b1bea76bd5c49c280c7472352d75fc9?pvs=4
 
 ### API 명세서
+https://www.notion.so/API-d758465568984406b4125c7d4f64fe42?pvs=4
 
 ### ERD
 <img width="1084" alt="erd" src="https://github.com/user-attachments/assets/56884371-0a28-47b7-8591-6baaea5aff70">
