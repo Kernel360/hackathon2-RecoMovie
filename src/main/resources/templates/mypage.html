@@ -9,7 +9,7 @@
 <header>
     <div class="navbar">
         <div class="logo">
-            <h1>RecoMovie-</h1>
+            <h1>RecoMovie</h1>
         </div>
         <nav>
             <ul class="menu-right">
@@ -49,7 +49,6 @@
                 <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${review.movie.poster}}" alt="Movie Poster" class="poster">
                 <div class="review-title">
                     <h3 th:text="${review.movie.title}"></h3>
-                    <p th:text="${review.movie.releaseDate}"></p>
                 </div>
                 <p th:text="'영화 리뷰 : ' + ${review.movieReview}" class="review-body"></p>
                 <div class="rating">
