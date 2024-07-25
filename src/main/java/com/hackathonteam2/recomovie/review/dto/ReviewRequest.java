@@ -1,9 +1,10 @@
 package com.hackathonteam2.recomovie.review.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.hackathonteam2.recomovie.review.entity.Review;
-import com.hackathonteam2.recomovie.user.entity.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -12,11 +13,27 @@ import lombok.*;
 @ToString
 public class ReviewRequest {
 
-    private String brand;
-    private String region;
-    private String cinema;
-    private String cinemaReview;
-    private Long movieId;
-    private String movieReview;
-    private Integer rating;
+	private String brand;
+
+	private String region;
+
+	private String cinema;
+
+	private String cinemaReview;
+
+	private Long movieId;
+
+	private String title;
+
+	private String posterPath;
+
+	private String releaseDate;
+
+	private Integer runtime;
+
+	private String overview;
+
+	private String movieReview;
+
+	private Integer rating;
 }

@@ -10,53 +10,62 @@
     <h1>Write a Review</h1>
 </header>
 <main>
-    <div class="movie-details">
-        <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${movie.poster}}" alt="Movie Poster">
-        <div>
-            <h2 th:text="${movie.title}">Movie Title</h2>
-            <p><strong>Release Date:</strong> <span th:text="${movie.releaseDate}"></span></p>
-            <p><strong>Popularity:</strong> <span th:text="${movie.popularity}"></span></p>
-        </div>
-    </div>
     <form action="/reviews/write" method="post">
-        <input type="hidden" name="movieId" th:value="${movieId}"/>
-        <div>
-            <label for="movieReview">Movie Review:</label>
-            <textarea id="movieReview" name="movieReview" rows="6" required placeholder="Write your review about the movie here..."></textarea>
+        <div class="movie-details">
+            <input type="hidden" name="movie" th:value="${movie.getMovie_id()}"/>
+            <input type="hidden" name="title" th:value="${movie.getTitle()}"/>
+            <input type="hidden" name="posterPath" th:value="${movie.getPoster_path()}"/>
+            <input type="hidden" name="releaseDate" th:value="${movie.getRelease_date()}"/>
+            <input type="hidden" name="runtime" th:value="${movie.getRuntime()}"/>
+            <input type="hidden" name="overview" th:value="${movie.getOverview()}"/>
+            <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${movie.getPoster_path()}}" alt="Movie Poster">
+            <div>
+                <h2 th:text="${movie.getTitle()}">Movie Title</h2>
+                <p><strong>Release Date:</strong> <span th:text="${movie.getRelease_date()}"></span></p>
+                <p><strong>Runtime:</strong> <span th:text="${movie.getRuntime()}"></span></p>
+            </div>
         </div>
         <div>
-            <label for="brand">Select Cinema Brand:</label>
-            <select id="brand" name="brand">
-                <option value="">Select Cinema Brand</option>
-            </select>
-        </div>
-        <div>
-            <label for="region">Select Region:</label>
-            <select id="region" name="region" disabled>
-                <option value="">Select Region</option>
-            </select>
-        </div>
-        <div>
-            <label for="cinema">Select Cinema:</label>
-            <select id="cinema" name="cinema" disabled>
-                <option value="">Select Cinema</option>
-            </select>
-        </div>
-        <div>
-            <label for="cinemaReview">Cinema Review:</label>
-            <textarea id="cinemaReview" name="cinemaReview" rows="6" required placeholder="Write your review about the cinema here..."></textarea>
-        </div>
-        <div>
-            <label for="rating">Rating:</label>
-            <input type="number" id="rating" name="rating" min="1" max="5" required>
-        </div>
-        <div>
-            <button type="submit">Submit Review</button>
+            <div>
+                <label for="movieReview">Movie Review:</label>
+                <textarea id="movieReview" name="movieReview" rows="6" required
+                          placeholder="Write your review about the movie here..."></textarea>
+            </div>
+            <div>
+                <label for="brand">Select Cinema Brand:</label>
+                <select id="brand" name="brand">
+                    <option value="">Select Cinema Brand</option>
+                </select>
+            </div>
+            <div>
+                <label for="region">Select Region:</label>
+                <select id="region" name="region" disabled>
+                    <option value="">Select Region</option>
+                </select>
+            </div>
+            <div>
+                <label for="cinema">Select Cinema:</label>
+                <select id="cinema" name="cinema" disabled>
+                    <option value="">Select Cinema</option>
+                </select>
+            </div>
+            <div>
+                <label for="cinemaReview">Cinema Review:</label>
+                <textarea id="cinemaReview" name="cinemaReview" rows="6" required
+                          placeholder="Write your review about the cinema here..."></textarea>
+            </div>
+            <div>
+                <label for="rating">Rating:</label>
+                <input type="number" id="rating" name="rating" min="1" max="5" required>
+            </div>
+            <div>
+                <button type="submit">Submit Review</button>
+            </div>
         </div>
     </form>
 </main>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         fetch('/api/cinema/list')
             .then(response => response.json())
             .then(data => {
@@ -84,7 +93,7 @@
                     brandDropdown.appendChild(option);
                 });
 
-                brandDropdown.addEventListener('change', function() {
+                brandDropdown.addEventListener('change', function () {
                     regionDropdown.innerHTML = '<option value="">Select Region</option>';
                     cinemaDropdown.innerHTML = '<option value="">Select Cinema</option>';
                     cinemaDropdown.disabled = true;
@@ -101,7 +110,7 @@
                     }
                 });
 
-                regionDropdown.addEventListener('change', function() {
+                regionDropdown.addEventListener('change', function () {
                     cinemaDropdown.innerHTML = '<option value="">Select Cinema</option>';
                     if (cinemas[brandDropdown.value] && cinemas[brandDropdown.value][this.value]) {
                         cinemas[brandDropdown.value][this.value].forEach(cinema => {

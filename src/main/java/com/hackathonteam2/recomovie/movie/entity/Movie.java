@@ -46,6 +46,6 @@ public class Movie {
 	@OneToMany(mappedBy = "movie")
 	private List<Review> reviews;
 
-	@Column(name = "popularity")
-	private Double popularity;
+	@Column(name = "runtime")
+	private Integer runtime;
 }

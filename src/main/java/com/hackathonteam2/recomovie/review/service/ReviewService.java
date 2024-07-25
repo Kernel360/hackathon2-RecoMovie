@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.hackathonteam2.recomovie.cinema.entity.Cinema;
 import com.hackathonteam2.recomovie.cinema.repository.CinemaRepository;
+import com.hackathonteam2.recomovie.movie.dto.TMDBDetailsDto;
 import com.hackathonteam2.recomovie.movie.entity.Movie;
 import com.hackathonteam2.recomovie.movie.repository.MovieRepository;
 import com.hackathonteam2.recomovie.review.dto.ReviewRequest;
@@ -46,14 +47,25 @@ public class ReviewService {
 		reviewRepository.save(review);
 	}
 
-	public void writeReview(User user, ReviewRequest request, Cinema cinema, Movie movie) {
+	public void writeReview(User user, ReviewRequest request, Cinema cinema, TMDBDetailsDto tmdbDetailsDto) {
 		Review review = new Review();
 		review.setUser(user);
 		review.setCinema(cinema);
-		review.setMovie(movie);
+		review.setMovie(parse(tmdbDetailsDto));
 		review.setMovieReview(request.getMovieReview());
 		review.setCinemaReview(request.getCinemaReview());
 		review.setRating(request.getRating());
 		reviewRepository.save(review);
+	}
+
+	public Movie parse(TMDBDetailsDto tmdbDetailsDto) {
+		return Movie.builder()
+			.movieId(tmdbDetailsDto.getMovie_id())
+			.title(tmdbDetailsDto.getTitle())
+			.overview(tmdbDetailsDto.getOverview())
+			.releaseDate(tmdbDetailsDto.getRelease_date())
+			.poster(tmdbDetailsDto.getPoster_path())
+			.runtime(tmdbDetailsDto.getRuntime())
+			.build();
 	}
 }

@@ -25,7 +25,7 @@ public class TMDBService {
 
 	private final RestClient restClient;
 	private final ObjectMapper mapper;
-	
+
 	public NowPlayingResponse getNowPlaying(int pageNum) throws JsonProcessingException {
 		String json = restClient.get()
 			.uri(uriBuilder -> uriBuilder
@@ -76,7 +76,7 @@ public class TMDBService {
 			.title(rootNode.path("title").asText())
 			.poster_path(rootNode.path("poster_path").asText())
 			.release_date(LocalDate.parse(rootNode.path("release_date").asText(), DateTimeFormatter.ISO_DATE))
-			.popularity(rootNode.path("popularity").asDouble())
+			.runtime(rootNode.path("runtime").asInt())
 			.overview(rootNode.path("overview").asText())
 			.build();
 
