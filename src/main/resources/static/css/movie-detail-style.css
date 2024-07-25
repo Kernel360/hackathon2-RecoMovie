@@ -72,8 +72,13 @@ main {
 }
 
 .movie-details {
-    display: flex;
-    gap: 20px;
+    flex: 1; /* 두 섹션이 같은 너비를 가지도록 설정 */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-left: 20px;
+    margin-Right: 20px;
 }
 
 .movie-poster {
@@ -104,8 +109,23 @@ main {
 .write-review-button:hover {
     background-color: #0056b3;
 }
+
 .reviews {
-    margin: 20px 0;
+    flex: 1; /* 두 섹션이 같은 너비를 가지도록 설정 */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-left: 20px;
+    margin-Right: 20px;
+}
+
+.review-container {
+    max-height: 800px; /* You can adjust this height as needed */
+    overflow-y: auto; /* Adds a vertical scrollbar if needed */
+    padding: 10px;
+    border: 1px solid #ddd; /* Optional border for better visibility */
+    border-radius: 8px; /* Optional rounded corners */
 }
 
 .review-list {
@@ -155,4 +175,17 @@ footer {
     padding: 10px;
     background-color: #fff;
     border-top: 1px solid #ddd;
+}
+
+.review-item:last-child {
+    border-bottom: none; /* Remove border from last item */
+}
+
+.content-container {
+    display: flex;                /* Flexbox로 수평 배치 */
+    flex-direction: row;          /* 가로 방향으로 아이템 배치 */
+    gap: 20px;                    /* 섹션 간 간격 */
+    padding: 20px;                /* 컨테이너 안쪽 여백 */
+    max-width: 1200px;            /* 최대 너비 */
+    margin: 0 auto;               /* 중앙 정렬 */
 }
