@@ -45,6 +45,7 @@ public class TMDBService {
 				.movie_id(jsonNode.path("id").asLong())
 				.title(jsonNode.path("title").asText())
 				.poster_path(jsonNode.path("poster_path").asText())
+				.release_date(jsonNode.path("release_date").asText())
 				.build();
 
 			nowPlayingDtoList.add(nowPlayingDto);

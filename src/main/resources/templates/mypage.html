@@ -9,7 +9,7 @@
 <header>
     <div class="navbar">
         <div class="logo">
-            <h1>Movie Review Site</h1>
+            <h1>RecoMovie-</h1>
         </div>
         <nav>
             <ul class="menu-right">
@@ -23,7 +23,7 @@
 
 <main>
     <section class="profile-settings">
-        <h2>Profile Settings</h2>
+        <h2>프로필</h2>
         <div class="profile-card">
             <div class="profile-info">
                 <img th:src="${user?.profileImageUrl ?: '/images/default-profile.png'}" alt="Profile Image" class="profile-img"/>
@@ -41,7 +41,10 @@
         <div class="review-list" th:each="review : ${myReviews}">
             <div class="review-item">
                 <div class="review-header">
-                    <p><strong>영화관:</strong> <span th:text="${review.cinema.name}"></span> | <span th:text="${#dates.format(review.createdAt, 'yyyy-MM-dd')}"></span></p>
+                    <p><strong>영화관:</strong> <span th:text="${review.cinema.name}"></span> | <strong>작성 날짜:</strong> <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd')}"></span></p>
+                </div>
+                <div>
+                    <p>영화관 리뷰: <span th:text="${review.cinemaReview}"></span></p>
                 </div>
                 <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${review.movie.poster}}" alt="Movie Poster" class="poster">
                 <div class="review-title">
