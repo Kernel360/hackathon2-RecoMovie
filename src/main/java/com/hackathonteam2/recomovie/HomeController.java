@@ -36,8 +36,14 @@ public class HomeController {
 	public String showMovieDetail(@PathVariable("id") Long movieId, Model model) throws JsonProcessingException {
 		TMDBDetailsDto tmdbDetailsDto = tmdbService.getDetails(movieId);
 		List<Review> reviews = reviewService.getReviewsByMovieId(movieId);
+		reviews.sort((r1, r2) -> r2.getCreatedAt().compareTo(r1.getCreatedAt()));
+		double averageRating = reviews.stream()
+			.mapToInt(Review::getRating)
+			.average()
+			.orElse(0.0);
 		model.addAttribute("movie", tmdbDetailsDto);
 		model.addAttribute("reviews", reviews);
+		model.addAttribute("averageRating", averageRating);
 		return "movie-detail";
 	}
 }

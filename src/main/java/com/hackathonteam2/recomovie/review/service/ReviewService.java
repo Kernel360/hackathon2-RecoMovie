@@ -29,7 +29,7 @@ public class ReviewService {
 	private final MovieRepository movieRepository;
 
 	public List<Review> getMyReviews(User user) {
-		List<Review> reviews = reviewRepository.findByUser(user);
+		List<Review> reviews = reviewRepository.findByUserOrderByCreatedAtAsc(user);
 		log.info("Found {} reviews for user {}", reviews.size(), user.getLoginId());
 		return reviews;
 	}
@@ -41,7 +41,7 @@ public class ReviewService {
 	}
 
 	public List<Review> getReviewsByMovieId(Long movieId) {
-		return reviewRepository.findByMovieMovieId(movieId);
+		return reviewRepository.findByMovieMovieIdOrderByCreatedAtAsc(movieId);
 	}
 
 	public void saveReview(Review review) {

@@ -35,7 +35,7 @@ public class MyPageController {
 
 		List<Review> myReviews = reviewService.getMyReviews(
 			user); // or reviewService.getMyReviewsByUserId(user.getUserId());
-
+		myReviews.sort((r1, r2) -> r2.getCreatedAt().compareTo(r1.getCreatedAt()));
 		if (myReviews.isEmpty()) {
 			log.info("No reviews found for user: {}", user.getLoginId());
 		} else {

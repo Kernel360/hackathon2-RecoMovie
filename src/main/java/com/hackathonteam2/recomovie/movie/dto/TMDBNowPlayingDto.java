@@ -23,4 +23,6 @@ public class TMDBNowPlayingDto {
 	private String title;
 
 	private String poster_path;
+
+	private String release_date;
 }

@@ -13,8 +13,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	@Query("select r from Review r where r.user.userId = :userId")
 	List<Review> findAllByUserId(@Param("userId") Long userId);
 
-	List<Review> findByUser(User user); // 기존 메서드도 유지
+	List<Review> findByUserOrderByCreatedAtAsc(User user); // 기존 메서드도 유지
 
 
-	List<Review> findByMovieMovieId(Long movieId);
+	List<Review> findByMovieMovieIdOrderByCreatedAtAsc(Long movieId);
 }
