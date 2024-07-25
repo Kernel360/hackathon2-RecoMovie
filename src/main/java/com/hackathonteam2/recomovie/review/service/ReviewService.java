@@ -1,6 +1,7 @@
 package com.hackathonteam2.recomovie.review.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -56,4 +57,19 @@ public class ReviewService {
 		review.setRating(request.getRating());
 		reviewRepository.save(review);
 	}
+
+	public Optional<List<Review>> getAllByMovieId(
+		Long movieId
+	) {
+		return reviewRepository.findAllByMovieId(movieId);
+	}
+
+	public Optional<List<Review>> getAllByCinemaId(
+		Long cinema_id
+	) {
+
+		return reviewRepository.findAllByCinemaId(cinema_id);
+	}
+
+
 }
