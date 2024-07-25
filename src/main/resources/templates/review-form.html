@@ -21,45 +21,45 @@
             <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${movie.getPoster_path()}}" alt="Movie Poster">
             <div>
                 <h2 th:text="${movie.getTitle()}">Movie Title</h2>
-                <p><strong>Release Date:</strong> <span th:text="${movie.getRelease_date()}"></span></p>
-                <p><strong>Runtime:</strong> <span th:text="${movie.getRuntime()}"></span></p>
+                <p><strong>개봉일:</strong> <span th:text="${movie.getRelease_date()}"></span></p>
+                <p><strong>런타임:</strong> <span th:text="${movie.getRuntime()}"></span></p>
             </div>
         </div>
         <div>
             <div>
-                <label for="movieReview">Movie Review:</label>
+                <label for="movieReview">영화 리뷰:</label>
                 <textarea id="movieReview" name="movieReview" rows="6" required
-                          placeholder="Write your review about the movie here..."></textarea>
+                          placeholder="영화에 대한 리뷰를 남겨주세요."></textarea>
             </div>
             <div>
-                <label for="brand">Select Cinema Brand:</label>
+                <label for="brand">영화관 브랜드를 선택해주세요.:</label>
                 <select id="brand" name="brand">
-                    <option value="">Select Cinema Brand</option>
+                    <option value="">미선택</option>
                 </select>
             </div>
             <div>
-                <label for="region">Select Region:</label>
+                <label for="region">영화관 지역을 선택해주세요.:</label>
                 <select id="region" name="region" disabled>
-                    <option value="">Select Region</option>
+                    <option value="">미선택</option>
                 </select>
             </div>
             <div>
-                <label for="cinema">Select Cinema:</label>
+                <label for="cinema">영화관을 선택해주세요.:</label>
                 <select id="cinema" name="cinema" disabled>
-                    <option value="">Select Cinema</option>
+                    <option value="">미선택</option>
                 </select>
             </div>
             <div>
-                <label for="cinemaReview">Cinema Review:</label>
+                <label for="cinemaReview">영화관 리뷰:</label>
                 <textarea id="cinemaReview" name="cinemaReview" rows="6" required
-                          placeholder="Write your review about the cinema here..."></textarea>
+                          placeholder="영화관(시설)에 대한 리뷰를 남겨주세요."></textarea>
             </div>
             <div>
-                <label for="rating">Rating:</label>
+                <label for="rating">평점:</label>
                 <input type="number" id="rating" name="rating" min="1" max="5" required>
             </div>
             <div>
-                <button type="submit">Submit Review</button>
+                <button type="submit">리뷰 남기기</button>
             </div>
         </div>
     </form>
@@ -94,8 +94,8 @@
                 });
 
                 brandDropdown.addEventListener('change', function () {
-                    regionDropdown.innerHTML = '<option value="">Select Region</option>';
-                    cinemaDropdown.innerHTML = '<option value="">Select Cinema</option>';
+                    regionDropdown.innerHTML = '<option value="">미선택</option>';
+                    cinemaDropdown.innerHTML = '<option value="">미선택</option>';
                     cinemaDropdown.disabled = true;
                     if (regions[this.value]) {
                         regions[this.value].forEach(region => {
@@ -111,7 +111,7 @@
                 });
 
                 regionDropdown.addEventListener('change', function () {
-                    cinemaDropdown.innerHTML = '<option value="">Select Cinema</option>';
+                    cinemaDropdown.innerHTML = '<option value="">미선택</option>';
                     if (cinemas[brandDropdown.value] && cinemas[brandDropdown.value][this.value]) {
                         cinemas[brandDropdown.value][this.value].forEach(cinema => {
                             let option = document.createElement("option");
