@@ -41,9 +41,10 @@ public class HomeController {
 			.mapToInt(Review::getRating)
 			.average()
 			.orElse(0.0);
+		String formattedAverageRating = String.format("%.1f", averageRating);
 		model.addAttribute("movie", tmdbDetailsDto);
 		model.addAttribute("reviews", reviews);
-		model.addAttribute("averageRating", averageRating);
+		model.addAttribute("averageRating", formattedAverageRating);
 		return "movie-detail";
 	}
 }
