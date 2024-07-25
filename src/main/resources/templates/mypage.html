@@ -15,8 +15,6 @@
             <ul class="menu-right">
                 <li><a href="/home">홈</a></li>
                 <li><a href="/mypage">마이페이지</a></li>
-                <li><a href="/location">Cinema</a></li>
-                <li><a href="/reviews" class="review-button">Write a Review</a></li>
                 <li><a href="/logout" class="logout-button">Logout</a></li>
             </ul>
         </nav>
@@ -30,7 +28,7 @@
             <div class="profile-info">
                 <img th:src="${user?.profileImageUrl ?: '/images/default-profile.png'}" alt="Profile Image" class="profile-img"/>
                 <div class="profile-details">
-                    <p class="username">Username: <span th:text="${user.nickname}"></span></p>
+                    <p class="username">이름: <span th:text="${user.name}"></span></p>
                     <p class="email">Email: <span th:text="${user.email}"></span></p>
                     <button class="profile-btn">Change Profile</button>
                 </div>
@@ -38,19 +36,13 @@
         </div>
     </section>
 
-<!--    <section class="favorites">-->
-<!--        <h2>Movies I Favorite</h2>-->
-<!--        <div class="movie-list">-->
-<!--            <div class="movie-item">Inception</div>-->
-<!--            <div class="movie-item">The Matrix</div>-->
-<!--            <div class="movie-item">Interstellar</div>-->
-<!--        </div>-->
-<!--    </section>-->
-
     <section class="reviews">
-        <h2>My Reviews</h2>
+        <h2>내 리뷰</h2>
         <div class="review-list" th:each="review : ${myReviews}">
             <div class="review-item">
+                <div class="review-header">
+                    <p><strong>영화관:</strong> <span th:text="${review.cinema.name}"></span> | <span th:text="${#dates.format(review.createdAt, 'yyyy-MM-dd')}"></span></p>
+                </div>
                 <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${review.movie.poster}}" alt="Movie Poster" class="poster">
                 <div class="review-title">
                     <h3 th:text="${review.movie.title}"></h3>
@@ -64,19 +56,6 @@
         </div>
     </section>
 
-<!--    <section class="posts">-->
-<!--        <h2>My Posts</h2>-->
-<!--        <div class="post-list">-->
-<!--            <div class="post-item">-->
-<!--                <h3>Upcoming Movies</h3>-->
-<!--                <p>Excited about the new releases coming this summer!</p>-->
-<!--            </div>-->
-<!--            <div class="post-item">-->
-<!--                <h3>Favorite Directors</h3>-->
-<!--                <p>Christopher Nolan, Steven Spielberg, and Quentin Tarantino are my top picks.</p>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </section>-->
 </main>
 
 <footer>

@@ -1,5 +1,7 @@
 package com.hackathonteam2.recomovie.review.entity;
 
+import java.time.LocalDateTime;
+
 import com.hackathonteam2.recomovie.cinema.entity.Cinema;
 import com.hackathonteam2.recomovie.movie.entity.Movie;
 import com.hackathonteam2.recomovie.user.entity.User;
@@ -56,4 +58,6 @@ public class Review {
 	@JoinColumn(name = "movie_id", nullable = false)
 	private Movie movie;
 
+	@Column(nullable = false, updatable = false)
+	private LocalDateTime createdAt;
 }
