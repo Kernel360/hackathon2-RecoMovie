@@ -24,7 +24,7 @@
 [API 명세서](https://www.notion.so/API-d758465568984406b4125c7d4f64fe42?pvs=4)
 
 ### ERD
-<img width="800" alt="erd" src="![스크린샷 2024-07-25 오후 8 51 09](https://github.com/user-attachments/assets/d36223b3-7945-4895-b2f6-e5d006ddd5b9)">
+![스크린샷 2024-07-25 오후 8 51 09](https://github.com/user-attachments/assets/4c30489f-9246-470c-baeb-19af0495f35e)
 
 ## 화면 구성
 
@@ -45,8 +45,8 @@
 
 
 ## 시스템 아키텍처
-<img width="800" alt="System Architecture" src="![스크린샷 2024-07-25 오후 8 57 46](https://github.com/user-attachments/assets/63155d1f-356c-4f0c-8b67-295eddba797a)
-">
+![스크린샷 2024-07-25 오후 8 57 46](https://github.com/user-attachments/assets/4129f569-c670-486d-ba45-99d8c6160da2)
+
 
 
 ## 협업 도구
