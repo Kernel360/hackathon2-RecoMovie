@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Details</title>
+    <link th:href="@{/css/movie-detail-style.css}" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="navbar">
+        <div class="logo">
+            <h1>RecoMovie</h1>
+        </div>
+        <nav>
+            <ul class="menu-right">
+                <li><a href="/home">홈</a></li>
+                <li><a href="/mypage">마이페이지</a></li>
+                <li><a href="/logout" class="logout-button">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="content-container">
+        <section class="movie-details">
+            <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${movie.getPoster_path()}}" alt="Movie Poster"
+                 class="movie-poster">
+            <div class="movie-info">
+                <h2 th:text="${movie.getTitle()}"></h2>
+                <p><strong>상세 설명:</strong> <span th:text="${movie.getOverview()}"></span></p>
+                <p><strong>런타임:</strong> <span th:text="${movie.getRuntime()}"></span> 분</p>
+                <p><strong>사용자 평점:</strong><span th:text="${averageRating}">0</span>/5</p>
+                <a th:href="@{/review(movieId=${movie.getMovie_id()})}" class="write-review-button">Write a Review</a>
+            </div>
+        </section>
+
+        <section class="reviews">
+            <h2>영화 리뷰</h2>
+            <div class="review-container">
+                <div class="review-list" th:each="review : ${reviews}">
+                    <div class="review-item">
+                        <div class="review-header">
+                            <p>
+                                <strong>영화관:</strong> <span th:text="${review.cinema.name}"></span> |
+                                <strong>작성 날짜:</strong> <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd')}"></span>
+                            </p>
+                            <p>영화관 리뷰: <span th:text="${review.cinemaReview}"></span></p>
+                        </div>
+                        <div class="review-body">
+                            <p><strong>사용자:</strong> <span th:text="${review.user.name}"></span></p>
+                            <p><strong>평점:</strong> <span th:text="${review.rating}"></span>/5</p>
+                            <p><strong>영화 리뷰:</strong> <span th:text="${review.movieReview}"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+</body>
+</html>

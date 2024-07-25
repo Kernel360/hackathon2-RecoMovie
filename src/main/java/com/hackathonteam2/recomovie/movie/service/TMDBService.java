@@ -1,85 +1,86 @@
 package com.hackathonteam2.recomovie.movie.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hackathonteam2.recomovie.movie.dto.TMDBMovieResponseDto;
-import com.hackathonteam2.recomovie.movie.repository.MovieRepository;
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hackathonteam2.recomovie.movie.dto.NowPlayingResponse;
+import com.hackathonteam2.recomovie.movie.dto.TMDBDetailsDto;
+import com.hackathonteam2.recomovie.movie.dto.TMDBNowPlayingDto;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TMDBService {
 
-    private final MovieRepository movieRepository;
-    private final RestClient restClient;
-    private final ObjectMapper mapper;
+	private final RestClient restClient;
+	private final ObjectMapper mapper;
 
-    // 반복적인 코드 수정 필요
-    public List<TMDBMovieResponseDto> getByKeyword(String keyword) throws JsonProcessingException {
-        List<TMDBMovieResponseDto> movieList = new ArrayList<>();
-        int page = 1 , totalPages = 0;
-        do {
-            int pNum = page++;
-            String json = restClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/3/search/movie")
-                            .queryParam("include_adult", "true")
-                            .queryParam("language", "ko-KR")
-                            .queryParam("page", pNum)
-                            .queryParam("query", keyword)
-                            .build())
-                    .retrieve()
-                    .body(String.class);
-            JsonNode rootNode = mapper.readTree(json);
-            totalPages = Integer.parseInt(rootNode.get("total_pages").asText());
-            movieList.addAll(parse(rootNode.findPath("results")));
-        } while(page<totalPages);
-        movieList.sort(Comparator.comparingDouble(TMDBMovieResponseDto::getPopularity));
-        return movieList;
-    }
+	public NowPlayingResponse getNowPlaying(int pageNum) throws JsonProcessingException {
+		String json = restClient.get()
+			.uri(uriBuilder -> uriBuilder
+				.path("3/movie/now_playing")
+				.queryParam("language", "ko-KR")
+				.queryParam("page", pageNum)
+				.queryParam("region", "KR")
+				.build())
+			.retrieve()
+			.body(String.class);
 
-    public List<TMDBMovieResponseDto> getByPeriod(String startDate, String endDate) throws JsonProcessingException {
+		JsonNode rootNode = mapper.readTree(json);
+		List<TMDBNowPlayingDto> nowPlayingDtoList = new ArrayList<>();
 
-        List<TMDBMovieResponseDto> movieList = new ArrayList<>();
-        int page = 1 , totalPages = 0;
-        do {
-            int pNum = page++;
-            String json = restClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/3/discover/movie")
-                            .queryParam("include_adult", "true")
-                            .queryParam("language", "ko-KR")
-                            .queryParam("page", pNum)
-                            .queryParam("release_date.gte", startDate)
-                            .queryParam("release_date.lte", endDate)
-                            .queryParam("watch_region", "ko")
-                            .build())
-                    .retrieve()
-                    .body(String.class);
-            JsonNode rootNode = mapper.readTree(json);
-            totalPages = Integer.parseInt(rootNode.get("total_pages").asText());
-            movieList.addAll(parse(rootNode.findPath("results")));
-        } while(page<totalPages);
+		for (JsonNode jsonNode : rootNode.path("results")) {
+			TMDBNowPlayingDto nowPlayingDto = TMDBNowPlayingDto.builder()
+				.movie_id(jsonNode.path("id").asLong())
+				.title(jsonNode.path("title").asText())
+				.poster_path(jsonNode.path("poster_path").asText())
+				.release_date(jsonNode.path("release_date").asText())
+				.build();
 
-        return movieList;
-    }
+			nowPlayingDtoList.add(nowPlayingDto);
+		}
 
-    private List<TMDBMovieResponseDto> parse(JsonNode nodes) throws JsonProcessingException {
-        List<TMDBMovieResponseDto> responseList = new ArrayList<>();
-        for (JsonNode node : nodes) {
-            TMDBMovieResponseDto dto = mapper.treeToValue(node, TMDBMovieResponseDto.class);
-            // 아직 상영하지 않은 영화는 파싱하지 않음
-            // 이미 db에 있는 영화도 파싱하지 않음
-            if(!dto.getRelease_date().isEmpty()&&movieRepository.findByMovieId(dto.getMovie_id()).isEmpty())
-                responseList.add(dto);
-        }
-        return responseList;
-    }
+		NowPlayingResponse nowPlayingResponse = NowPlayingResponse.builder()
+			.page(pageNum)
+			.totalPage(Integer.valueOf(rootNode.get("total_pages").asText()))
+			.totalResults(Integer.valueOf(rootNode.get("total_results").asText()))
+			.nowPlaying(nowPlayingDtoList)
+			.build();
+
+		return nowPlayingResponse;
+	}
+
+	public TMDBDetailsDto getDetails(Long movieId) throws JsonProcessingException {
+		String json = restClient.get()
+			.uri(uriBuilder -> uriBuilder
+				.path("3/movie/" + movieId)
+				.queryParam("language", "ko-KR")
+				.build())
+			.retrieve()
+			.body(String.class);
+
+		JsonNode rootNode = mapper.readTree(json);
+
+		TMDBDetailsDto tmdbDetailsDto = TMDBDetailsDto.builder()
+			.movie_id(rootNode.path("id").asLong())
+			.title(rootNode.path("title").asText())
+			.poster_path(rootNode.path("poster_path").asText())
+			.release_date(LocalDate.parse(rootNode.path("release_date").asText(), DateTimeFormatter.ISO_DATE))
+			.runtime(rootNode.path("runtime").asInt())
+			.overview(rootNode.path("overview").asText())
+			.build();
+
+		return tmdbDetailsDto;
+	}
 }

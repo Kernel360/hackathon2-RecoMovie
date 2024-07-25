@@ -1,12 +1,21 @@
 package com.hackathonteam2.recomovie.movie.entity;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hackathonteam2.recomovie.review.entity.Review;
-import jakarta.persistence.*;
-import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -16,42 +25,27 @@ import java.util.List;
 @Builder
 public class Movie {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@Column(name = "movie_id")
+	private Long movieId;
 
-    @Column(name = "movie_id")
-    private Long movieId;
+	@Column(name = "title")
+	private String title;
 
-    @Column(name = "title")
-    private String title;
+	@Lob
+	@Column(columnDefinition = "TEXT", name = "overview")
+	private String overview;
 
-    @Lob
-    @Column(columnDefinition = "TEXT", name = "overview")
-    private String overview;
+	@Column(name = "release_date")
+	private LocalDate releaseDate;
 
-    @Column(name = "release_date")
-    private String releaseDate;
+	@Column(name = "poster")
+	private String poster;
 
-    @Column(name = "poster")
-    private String poster;
+	@JsonIgnore
+	@OneToMany(mappedBy = "movie")
+	private List<Review> reviews;
 
-    @OneToMany(mappedBy = "movie")
-    private List<MovieGenre> genres;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "movie")
-    private List<Review> reviews;
-
-    @Column(name = "popularity")
-    private Double popularity;
-
-    public void addGenre(Genre genre) {
-        genres.add(
-                MovieGenre.builder()
-                        .movie(this)
-                        .genre(genre)
-                        .build()
-        );
-    }
+	@Column(name = "runtime")
+	private Integer runtime;
 }

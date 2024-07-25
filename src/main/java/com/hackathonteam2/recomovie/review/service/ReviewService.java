@@ -1,7 +1,13 @@
 package com.hackathonteam2.recomovie.review.service;
 
-import com.hackathonteam2.recomovie.cinema.Cinema;
-import com.hackathonteam2.recomovie.cinema.CinemaRepository;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.hackathonteam2.recomovie.cinema.entity.Cinema;
+import com.hackathonteam2.recomovie.cinema.repository.CinemaRepository;
+import com.hackathonteam2.recomovie.movie.dto.TMDBDetailsDto;
 import com.hackathonteam2.recomovie.movie.entity.Movie;
 import com.hackathonteam2.recomovie.movie.repository.MovieRepository;
 import com.hackathonteam2.recomovie.review.dto.ReviewRequest;
@@ -9,54 +15,59 @@ import com.hackathonteam2.recomovie.review.entity.Review;
 import com.hackathonteam2.recomovie.review.repository.ReviewRepository;
 import com.hackathonteam2.recomovie.user.entity.User;
 import com.hackathonteam2.recomovie.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
-    private final ReviewRepository reviewRepository;
-    private final UserRepository userRepository;
-    private final CinemaRepository cinemaRepository;
-    private final MovieRepository movieRepository;
+	private final ReviewRepository reviewRepository;
+	private final UserRepository userRepository;
+	private final CinemaRepository cinemaRepository;
+	private final MovieRepository movieRepository;
 
+	public List<Review> getMyReviews(User user) {
+		List<Review> reviews = reviewRepository.findByUserOrderByCreatedAtAsc(user);
+		log.info("Found {} reviews for user {}", reviews.size(), user.getLoginId());
+		return reviews;
+	}
 
-    public List<Review> getAllReviews() {
-        List<Review> reviews = reviewRepository.findAll();
-        reviews.sort((i,j)->Long.compare(j.getId(),i.getId()));
-        return reviews;
-    }
+	public List<Review> getMyReviewsByUserId(Long userId) {
+		List<Review> reviews = reviewRepository.findAllByUserId(userId);
+		log.info("Found {} reviews for userId {}", reviews.size(), userId);
+		return reviews;
+	}
 
-    @Transactional
-    public void writeReview(String loginId, ReviewRequest request) {
-        if (loginId == null) {
-            throw new IllegalArgumentException("Login ID는 null일 수 없습니다.");
-        }
+	public List<Review> getReviewsByMovieId(Long movieId) {
+		return reviewRepository.findByMovieMovieIdOrderByCreatedAtAsc(movieId);
+	}
 
-        if (request.getMovieId() == null) {
-            throw new IllegalArgumentException("Movie ID는 null일 수 없습니다.");
-        }
+	public void saveReview(Review review) {
+		reviewRepository.save(review);
+	}
 
-        User user = userRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+	public void writeReview(User user, ReviewRequest request, Cinema cinema, TMDBDetailsDto tmdbDetailsDto) {
+		Review review = new Review();
+		review.setUser(user);
+		review.setCinema(cinema);
+		review.setMovie(parse(tmdbDetailsDto));
+		review.setMovieReview(request.getMovieReview());
+		review.setCinemaReview(request.getCinemaReview());
+		review.setRating(request.getRating());
+		review.setCreatedAt(LocalDateTime.now());
+		reviewRepository.save(review);
+	}
 
-//        Cinema cinema = cinemaRepository.findById(request.getCinemaId())
-//                .orElseThrow(() -> new RuntimeException("Cinema not found"));
-
-        Movie movie = movieRepository.findByMovieId(request.getMovieId())
-                .orElseThrow(() -> new RuntimeException("Movie not found"));
-
-        Cinema cinema = cinemaRepository.findByBrandAndRegionAndName(request.getBrand(),request.getRegion(),request.getCinema()).get();
-        Review review = new Review();
-        review.setCinemaReview(request.getCinemaReview());
-        review.setMovieReview(request.getMovieReview());
-        review.setRating(request.getRating());
-        review.setUser(user);
-        review.setMovie(movie);
-        review.setCinema(cinema);
-        reviewRepository.save(review);
-    }
+	public Movie parse(TMDBDetailsDto tmdbDetailsDto) {
+		return Movie.builder()
+			.movieId(tmdbDetailsDto.getMovie_id())
+			.title(tmdbDetailsDto.getTitle())
+			.overview(tmdbDetailsDto.getOverview())
+			.releaseDate(tmdbDetailsDto.getRelease_date())
+			.poster(tmdbDetailsDto.getPoster_path())
+			.runtime(tmdbDetailsDto.getRuntime())
+			.build();
+	}
 }

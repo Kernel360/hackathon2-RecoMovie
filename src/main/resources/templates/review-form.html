@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Write Review</title>
+    <link th:href="@{/css/review-form-style.css}" rel="stylesheet">
+
+</head>
+<body>
+<header>
+    <h1>리뷰 작성</h1>
+</header>
+<main>
+    <form action="/reviews/write" method="post">
+        <div class="movie-details">
+            <input type="hidden" name="movieId" th:value="${movie.getMovie_id()}"/>
+            <input type="hidden" name="title" th:value="${movie.getTitle()}"/>
+            <input type="hidden" name="posterPath" th:value="${movie.getPoster_path()}"/>
+            <input type="hidden" name="releaseDate" th:value="${movie.getRelease_date()}"/>
+            <input type="hidden" name="runtime" th:value="${movie.getRuntime()}"/>
+            <input type="hidden" name="overview" th:value="${movie.getOverview()}"/>
+            <img th:src="@{'https://image.tmdb.org/t/p/original/' + ${movie.getPoster_path()}}" alt="Movie Poster">
+            <div>
+                <h2 th:text="${movie.getTitle()}">Movie Title</h2>
+                <p><strong>개봉일:</strong> <span th:text="${movie.getRelease_date()}"></span></p>
+                <p><strong>런타임:</strong> <span th:text="${movie.getRuntime()}"></span></p>
+            </div>
+        </div>
+        <div>
+            <div>
+                <label for="movieReview">영화 리뷰:</label>
+                <textarea id="movieReview" name="movieReview" rows="6" required
+                          placeholder="영화에 대한 리뷰를 남겨주세요."></textarea>
+            </div>
+            <div>
+                <label for="brand">영화관 브랜드를 선택해주세요.:</label>
+                <select id="brand" name="brand">
+                    <option value="">미선택</option>
+                </select>
+            </div>
+            <div>
+                <label for="region">영화관 지역을 선택해주세요.:</label>
+                <select id="region" name="region" disabled>
+                    <option value="">미선택</option>
+                </select>
+            </div>
+            <div>
+                <label for="cinema">영화관을 선택해주세요.:</label>
+                <select id="cinema" name="cinema" disabled>
+                    <option value="">미선택</option>
+                </select>
+            </div>
+            <div>
+                <label for="cinemaReview">영화관 리뷰:</label>
+                <textarea id="cinemaReview" name="cinemaReview" rows="6" required
+                          placeholder="영화관(시설)에 대한 리뷰를 남겨주세요."></textarea>
+            </div>
+            <div>
+                <label for="rating">평점:</label>
+                <div id="rating" class="rating">
+                    <button type="button" data-value="1">1</button>
+                    <button type="button" data-value="2">2</button>
+                    <button type="button" data-value="3">3</button>
+                    <button type="button" data-value="4">4</button>
+                    <button type="button" data-value="5">5</button>
+                </div>
+                <input type="hidden" id="ratingInput" name="rating" required>
+            </div>
+            <div>
+                <button type="submit">리뷰 제출</button>
+            </div>
+        </div>
+    </form>
+</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/api/cinema/list')
+            .then(response => response.json())
+            .then(data => {
+                let brandDropdown = document.getElementById("brand");
+                let regionDropdown = document.getElementById("region");
+                let cinemaDropdown = document.getElementById("cinema");
+
+                let brands = new Set();
+                let regions = {};
+                let cinemas = {};
+
+                data.forEach(cinema => {
+                    brands.add(cinema.brand);
+                    if (!regions[cinema.brand]) regions[cinema.brand] = new Set();
+                    regions[cinema.brand].add(cinema.region);
+                    if (!cinemas[cinema.brand]) cinemas[cinema.brand] = {};
+                    if (!cinemas[cinema.brand][cinema.region]) cinemas[cinema.brand][cinema.region] = [];
+                    cinemas[cinema.brand][cinema.region].push(cinema.name);
+                });
+
+                brands.forEach(brand => {
+                    let option = document.createElement("option");
+                    option.value = brand;
+                    option.textContent = brand;
+                    brandDropdown.appendChild(option);
+                });
+
+                brandDropdown.addEventListener('change', function () {
+                    regionDropdown.innerHTML = '<option value="">Select Region</option>';
+                    cinemaDropdown.innerHTML = '<option value="">Select Cinema</option>';
+                    cinemaDropdown.disabled = true;
+                    if (regions[this.value]) {
+                        regions[this.value].forEach(region => {
+                            let option = document.createElement("option");
+                            option.value = region;
+                            option.textContent = region;
+                            regionDropdown.appendChild(option);
+                        });
+                        regionDropdown.disabled = false;
+                    } else {
+                        regionDropdown.disabled = true;
+                    }
+                });
+
+                regionDropdown.addEventListener('change', function () {
+                    cinemaDropdown.innerHTML = '<option value="">Select Cinema</option>';
+                    if (cinemas[brandDropdown.value] && cinemas[brandDropdown.value][this.value]) {
+                        cinemas[brandDropdown.value][this.value].forEach(cinema => {
+                            let option = document.createElement("option");
+                            option.value = cinema;
+                            option.textContent = cinema;
+                            cinemaDropdown.appendChild(option);
+                        });
+                        cinemaDropdown.disabled = false;
+                    } else {
+                        cinemaDropdown.disabled = true;
+                    }
+                });
+            });
+
+        const ratingButtons = document.querySelectorAll('#rating button');
+        const ratingInput = document.getElementById('ratingInput');
+
+        ratingButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                ratingInput.value = button.getAttribute('data-value');
+                ratingButtons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+            });
+        });
+    });
+</script>
+</body>
+</html>
