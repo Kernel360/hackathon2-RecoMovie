@@ -1,5 +1,6 @@
 package com.hackathonteam2.recomovie.review.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -55,6 +56,7 @@ public class ReviewService {
 		review.setMovieReview(request.getMovieReview());
 		review.setCinemaReview(request.getCinemaReview());
 		review.setRating(request.getRating());
+		review.setCreatedAt(LocalDateTime.now());
 		reviewRepository.save(review);
 	}
 

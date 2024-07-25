@@ -13,10 +13,8 @@
         </div>
         <nav>
             <ul class="menu-right">
-                <li><a href="/home">Home</a></li>
-                <li><a href="/mypage">My Page</a></li>
-                <li><a href="/location">Cinema</a></li>
-                <li><a href="/reviews" class="review-button">Write a Review</a></li>
+                <li><a href="/home">홈</a></li>
+                <li><a href="/mypage">마이페이지</a></li>
                 <li><a href="/logout" class="logout-button">Logout</a></li>
             </ul>
         </nav>
@@ -37,15 +35,22 @@
     </section>
 
     <section class="reviews">
-        <h2>User Reviews</h2>
+        <h2>사용자 리뷰</h2>
         <div class="review-list" th:each="review : ${reviews}">
             <div class="review-item">
-                <p><strong>Reviewer:</strong> <span th:text="${review.user.nickname}"></span></p>
-                <p><strong>Rating:</strong> <span th:text="${review.rating}"></span>/5</p>
-                <p><strong>Review:</strong> <span th:text="${review.movieReview}"></span></p>
+                <div class="review-header">
+                    <p><strong>영화관:</strong> <span th:text="${review.cinema.name}"></span></p>
+                    <p><strong>생성일:</strong> <span th:text="${#dates.format(review.createdAt, 'yyyy-MM-dd')}"></span></p>
+                </div>
+                <div class="review-content">
+                    <p><strong>사용자:</strong> <span th:text="${review.user.name}"></span></p>
+                    <p><strong>평점:</strong> <span th:text="${review.rating}"></span>/5</p>
+                    <p><strong>영화 리뷰:</strong> <span th:text="${review.movieReview}"></span></p>
+                </div>
             </div>
         </div>
     </section>
+
 </main>
 </body>
 </html>

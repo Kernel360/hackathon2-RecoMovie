@@ -130,69 +130,43 @@ h2 {
     background-color: #0056b3;
 }
 
-.movie-list, .review-list, .post-list {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto; /* 가로 스크롤 추가 */
-}
-
-.movie-item, .review-item, .post-item {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-    padding: 15px;
-    flex: 0 0 auto; /* 아이템을 가로로 정렬 */
-    text-align: center;
-    width: 300px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.review-item, .post-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.review-img {
-    width: 100px;
-    height: 100px;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-
 .reviews {
     margin: 20px 0;
-    overflow-x: auto; /* 가로 스크롤 추가 */
+    overflow-x: auto;
     white-space: nowrap;
     padding-bottom: 10px;
 }
 
 .review-list {
-    display: inline-flex; /* 가로 정렬 */
+    display: inline-flex;
     gap: 20px;
 }
 
 .review-item {
-    flex: 0 0 auto;
-    background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    transition: transform 0.3s;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    min-width: 300px;
+    max-width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    vertical-align: top;
 }
 
-.review-item:hover {
-    transform: translateY(-10px);
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #777;
 }
 
-.poster {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
+.review-header p {
+    margin: 0;
+    display: flex;
+    gap: 10px;
 }
 
 .review-title {
@@ -214,6 +188,8 @@ h2 {
 .review-body {
     margin: 10px 0;
     color: #444;
+    word-break: break-word;
+    white-space: normal;
 }
 
 .rating {
@@ -221,10 +197,11 @@ h2 {
     font-weight: bold;
 }
 
-@media (max-width: 600px) {
-    .review-item {
-        width: 80%;
-    }
+.poster {
+    width: 150px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
 }
 
 footer {
@@ -232,4 +209,10 @@ footer {
     padding: 10px;
     background-color: #fff;
     border-top: 1px solid #ddd;
+}
+
+@media (max-width: 600px) {
+    .review-item {
+        width: 100%;
+    }
 }
