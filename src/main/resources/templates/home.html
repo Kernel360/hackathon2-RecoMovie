@@ -2,20 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Movie Review Site</title>
+    <title>RecoMovie</title>
+    <style>
+        #map { width: 100%; height: 500px; }
+        #placesList { margin-top: 20px; }
+        #placesList li { margin-bottom: 10px; }
+    </style>
     <link th:href="@{/css/home-style.css}" rel="stylesheet">
 </head>
 <body>
 <header>
     <div class="navbar">
         <div class="logo">
-            <h1>Movie Review Site</h1>
+            <h1>RecoMovie</h1>
         </div>
         <nav>
             <ul class="menu-right">
-                <li><a href="#">홈</a></li>
-                <li><a href="/mypage">마이페이지</a></li>
-                <li><a href="/location">위치 테스트</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="/mypage">My Page</a></li>
                 <li><a href="/logout" class="logout-button">Logout</a></li>
             </ul>
         </nav>
@@ -40,8 +44,94 @@
             </div>
         </div>
     </section>
+    <section>
+        <h1>회원님의 주변 영화관</h1>
+        <p>(회원님의 위치 기준으로 반경 2km 이내 위치한 영화관이며 10m 정도의 오차가 있을 수 있습니다.)</p>
+        <p id="status">위치 정보 확인중...</p>
+        <div id="map"></div>
+        <ul id="placesList"></ul>
+    </section>
 </main>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkBQOX_HsnpM1QVg9ht3FTzY_AQgSEzXE&libraries=places"></script>
+<script>
+    let watchId;
+    let map, service, infowindow;
 
+    function startTracking() {
+        const status = document.getElementById("status");
+
+        if ("geolocation" in navigator) {
+            watchId = navigator.geolocation.watchPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    initMap(latitude, longitude);
+                    status.textContent = '';
+                },
+                (error) => {
+                    status.textContent = `위치 정보를 가져올 수 없습니다: ${error.message}`;
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
+        } else {
+            status.textContent = "브라우저가 위치 서비스를 지원하지 않습니다.";
+        }
+    }
+
+    function initMap(latitude, longitude) {
+        const userLocation = new google.maps.LatLng(latitude, longitude);
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: userLocation,
+            zoom: 15
+        });
+
+        infowindow = new google.maps.InfoWindow();
+
+        const request = {
+            location: userLocation,
+            radius: '2000',  // 2km
+            type: ['movie_theater']
+        };
+
+        service = new google.maps.places.PlacesService(map);
+        service.nearbySearch(request, placesSearchCB);
+    }
+
+    function placesSearchCB(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            const placesList = document.getElementById('placesList');
+            placesList.innerHTML = '';
+
+            results.forEach((place, index) => {
+                const placeLocation = place.geometry.location;
+                const marker = new google.maps.Marker({
+                    position: placeLocation,
+                    map: map
+                });
+
+                google.maps.event.addListener(marker, 'click', () => {
+                    infowindow.setContent(place.name);
+                    infowindow.open(map, marker);
+                });
+
+                const li = document.createElement('li');
+                li.textContent = place.name + ' - ' + place.vicinity;
+                placesList.appendChild(li);
+            });
+        } else {
+            console.error('Error fetching places: ' + status);
+        }
+    }
+
+    // 페이지 로드 시 자동으로 실시간 추적 시작
+    document.addEventListener("DOMContentLoaded", (event) => {
+        startTracking();
+    });
+</script>
 <footer>
     <p>© 2024 Movie Review Site</p>
 </footer>
