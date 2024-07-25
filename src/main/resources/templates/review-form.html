@@ -12,7 +12,7 @@
 <main>
     <form action="/reviews/write" method="post">
         <div class="movie-details">
-            <input type="hidden" name="movie" th:value="${movie.getMovie_id()}"/>
+            <input type="hidden" name="movieId" th:value="${movie.getMovie_id()}"/>
             <input type="hidden" name="title" th:value="${movie.getTitle()}"/>
             <input type="hidden" name="posterPath" th:value="${movie.getPoster_path()}"/>
             <input type="hidden" name="releaseDate" th:value="${movie.getRelease_date()}"/>
