@@ -47,12 +47,12 @@ public class ReviewController {
 
 		if (user != null) {
 			Cinema cinema = cinemaService.findByName(reviewRequest.getCinema());
-			
+
 			TMDBDetailsDto tmdbDetailsDto = movieService.save(reviewRequest);
 
 			reviewService.writeReview(user, reviewRequest, cinema, tmdbDetailsDto);
 
-			return "redirect:/movie/" + "54534";
+			return "redirect:/movie/" + tmdbDetailsDto.getMovie_id();
 		} else {
 			return "redirect:/login?error";
 		}
