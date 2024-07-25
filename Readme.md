@@ -7,7 +7,7 @@
 
 주제 : 영화 리뷰 사이트
 
-- 
+- 좋은 영화관을 골라 가고싶은 사람
 - 영화를 보기 전 후기가 궁금한 사람
 
 ---
@@ -43,6 +43,7 @@
 ![My Page - Movie Review Site ()](https://github.com/user-attachments/assets/a9f45b7b-d0d1-4353-8d0f-ea61bd330881)
 
 ### 메인 페이지
+<img width="800" alt="RecoMovie ()" src="https://github.com/user-attachments/assets/d82dd58d-2974-4194-b055-386787006cae">
 
 ### 리뷰 페이지
 ![Movie Details ()](https://github.com/user-attachments/assets/5173028b-a2c0-4fba-b3e0-add1ccb28e29)
