@@ -7,7 +7,7 @@
 </head>
 <body>
 <header>
-    <h1>Write a Review</h1>
+    <h1>리뷰 작성</h1>
 </header>
 <main>
     <form action="/reviews/write" method="post">
@@ -56,10 +56,17 @@
             </div>
             <div>
                 <label for="rating">평점:</label>
-                <input type="number" id="rating" name="rating" min="1" max="5" required>
+                <div id="rating" class="rating">
+                    <button type="button" data-value="1">1</button>
+                    <button type="button" data-value="2">2</button>
+                    <button type="button" data-value="3">3</button>
+                    <button type="button" data-value="4">4</button>
+                    <button type="button" data-value="5">5</button>
+                </div>
+                <input type="hidden" id="ratingInput" name="rating" required>
             </div>
             <div>
-                <button type="submit">리뷰 남기기</button>
+                <button type="submit">리뷰 제출</button>
             </div>
         </div>
     </form>
@@ -94,8 +101,8 @@
                 });
 
                 brandDropdown.addEventListener('change', function () {
-                    regionDropdown.innerHTML = '<option value="">미선택</option>';
-                    cinemaDropdown.innerHTML = '<option value="">미선택</option>';
+                    regionDropdown.innerHTML = '<option value="">Select Region</option>';
+                    cinemaDropdown.innerHTML = '<option value="">Select Cinema</option>';
                     cinemaDropdown.disabled = true;
                     if (regions[this.value]) {
                         regions[this.value].forEach(region => {
@@ -111,7 +118,7 @@
                 });
 
                 regionDropdown.addEventListener('change', function () {
-                    cinemaDropdown.innerHTML = '<option value="">미선택</option>';
+                    cinemaDropdown.innerHTML = '<option value="">Select Cinema</option>';
                     if (cinemas[brandDropdown.value] && cinemas[brandDropdown.value][this.value]) {
                         cinemas[brandDropdown.value][this.value].forEach(cinema => {
                             let option = document.createElement("option");
@@ -125,6 +132,17 @@
                     }
                 });
             });
+
+        const ratingButtons = document.querySelectorAll('#rating button');
+        const ratingInput = document.getElementById('ratingInput');
+
+        ratingButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                ratingInput.value = button.getAttribute('data-value');
+                ratingButtons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+            });
+        });
     });
 </script>
 </body>

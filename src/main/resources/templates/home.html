@@ -9,6 +9,8 @@
         #placesList li { margin-bottom: 10px; }
     </style>
     <link th:href="@{/css/home-style.css}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
 <header>
@@ -18,8 +20,8 @@
         </div>
         <nav>
             <ul class="menu-right">
-                <li><a href="#">Home</a></li>
-                <li><a href="/mypage">My Page</a></li>
+                <li><a href="#">홈</a></li>
+                <li><a href="/mypage">마이페이지</a></li>
                 <li><a href="/logout" class="logout-button">Logout</a></li>
             </ul>
         </nav>
@@ -37,7 +39,8 @@
                              alt="Movie Poster"
                              class="poster">
                         <div class="movie-details">
-                            <h3 th:text="${movie.getTitle()}"></h3>
+                            <h3 th:text="${movie.title}"></h3>
+                            <h3 class="release-date" th:text="${movie.getRelease_date()}"></h3>
                         </div>
                     </a>
                 </div>

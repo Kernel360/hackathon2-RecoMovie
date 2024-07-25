@@ -118,12 +118,6 @@ h2 {
     padding: 15px;
 }
 
-.movie-details h3 {
-    font-size: 20px;
-    margin: 0 0 10px;
-
-}
-
 .movie-details p {
     margin: 5px 0;
     font-size: 14px;
@@ -135,6 +129,20 @@ h2 {
     font-size: 14px;
 }
 
+.movie-details h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333333;
+    margin: 10px 0;
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.movie-details .release-date {
+    font-size: 18px;
+    font-weight: 400;
+    color: #333333;
+    margin: 5px 0;
+}
 
 footer {
     text-align: center;
