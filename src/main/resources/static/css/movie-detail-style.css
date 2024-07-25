@@ -72,8 +72,29 @@ main {
 }
 
 .movie-details {
-    display: flex;
+    flex: 1;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     gap: 20px;
+    margin-left: 20px
+    margin-right: 20px
+}
+
+.reviews {
+    flex: 1;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    gap: 20px;
+    margin-left: 20px
+    margin-right: 20px
+}
+
+.review-container {
+    max-height: 400px; /* You can adjust this height as needed */
+    overflow-y: auto; /* Adds a vertical scrollbar if needed */
+    padding: 10px;
+    border: 1px solid #ddd; /* Optional border for better visibility */
+    border-radius: 8px; /* Optional rounded corners */
 }
 
 .movie-poster {
@@ -103,10 +124,6 @@ main {
 
 .write-review-button:hover {
     background-color: #0056b3;
-}
-
-.reviews {
-    margin-top: 40px;
 }
 
 .review-list {
@@ -139,4 +156,10 @@ footer {
     padding: 10px;
     background-color: #fff;
     border-top: 1px solid #ddd;
+}
+
+.content-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
 }
