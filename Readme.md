@@ -1,6 +1,6 @@
 
 ![3333](https://github.com/user-attachments/assets/bd85cf00-5ed0-403d-87f2-9b4918a698b9)
-## 프로젝트 소개
+# 프로젝트 소개
 
 ### 주제
 영화 리뷰 사이트
@@ -9,19 +9,55 @@
 - 좋은 영화관을 골라 가고 싶은 사람
 - 영화를 보기 전 후기가 궁금한 사람
 
+---
+## Notion Link
+- [RecoMovie Notion Page](https://sincere-nova-ec6.notion.site/2-7141ab0b81eb4688a8ad036347160bfe?pvs=4)
+
+---
+## 기술 스택
+  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white">
+  <img src="https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white">
+  <img src="https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white">
+  <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E"><br>
+  <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=F7DF1E">
+  <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
+  <img src="https://img.shields.io/badge/Spring Data Jpa-6DB33F?style=for-the-badge&logo=&logoColor=white">
+
+---
+## DB
+  <img src="https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white">
+  <img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white">
+
+---
+## IDE
+  <img src="https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white">
+
+---
+## 협업 도구
+  <img src="https://img.shields.io/badge/git-E34F26?style=for-the-badge&logo=git&logoColor=white">
+  <img src="https://img.shields.io/badge/github-000000?style=for-the-badge&logo=github&logoColor=white"><br>
+  <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+  <img src="https://img.shields.io/badge/ERD cloud-000000?style=for-the-badge&logo=ErdCloud&logoColor=white">
+  <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
+
+---
+## 개발 환경
+<img src="https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white"><br>
+
+---
 ## Contributors
 
-- 팀장: 이재윤
-- 1~3일차 팀원: 박수형, 이선우
-- 3~5일차 팀원: 김택준, 송해덕, 임건우
+- 팀장: `이재윤`
+- 1~3일차 팀원: `박수형`, `이선우`
+- 3~5일차 팀원: `김택준`, `송해덕`, `임건우`
 
 ## 산출물
 
 ### 요구사항 명세서
-[요구사항 명세서](https://www.notion.so/5b1bea76bd5c49c280c7472352d75fc9?pvs=4)
+- [요구사항 명세서](https://www.notion.so/5b1bea76bd5c49c280c7472352d75fc9?pvs=4)
 
 ### API 명세서
-[API 명세서](https://www.notion.so/API-d758465568984406b4125c7d4f64fe42?pvs=4)
+- [API 명세서](https://www.notion.so/API-d758465568984406b4125c7d4f64fe42?pvs=4)
 
 ### ERD
 ![스크린샷 2024-07-25 오후 8 51 09](https://github.com/user-attachments/assets/4c30489f-9246-470c-baeb-19af0495f35e)
@@ -34,35 +70,22 @@
     <img width="400" alt="Register" src="https://github.com/user-attachments/assets/483cb980-e9a8-4b7a-9e7f-b7dc9f680357">
 </div>
 
+---
+### 메인 페이지
+
+---
 ### 마이 페이지
 <img width="600" alt="My Page" src="https://github.com/user-attachments/assets/a9f45b7b-d0d1-4353-8d0f-ea61bd330881">
 
-### 메인 페이지
-<img width="600" alt="Main Page" src="https://github.com/user-attachments/assets/d82dd58d-2974-4194-b055-386787006cae">
-
+---
 ### 리뷰 페이지
 <img width="600" alt="Review Page" src="https://github.com/user-attachments/assets/5173028b-a2c0-4fba-b3e0-add1ccb28e29">
 
-
+---
 ## 시스템 아키텍처
-![스크린샷 2024-07-25 오후 8 57 46](https://github.com/user-attachments/assets/4129f569-c670-486d-ba45-99d8c6160da2)
+<img width="600" alt="System architecture" src="https://github.com/user-attachments/assets/4129f569-c670-486d-ba45-99d8c6160da2">
 
-
-
-## 협업 도구
-
-- ERD Cloud
-- Figma
-- Github
-- Notion
-
-
-## 기술 스택
-
-- Spring Boot 3
-- Spring Data JPA
-- Thymeleaf
-- MariaDB 11.42
+---
 
 
 ## 마무리

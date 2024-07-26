@@ -1,22 +1,38 @@
 package com.hackathonteam2.recomovie.movie.controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hackathonteam2.recomovie.movie.service.MovieService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hackathonteam2.recomovie.movie.dto.NowPlayingResponse;
+import com.hackathonteam2.recomovie.movie.dto.TMDBDetailsDto;
+import com.hackathonteam2.recomovie.movie.service.TMDBService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/movie")
+@RequestMapping("/tmdb")
 public class MovieRestController {
 
-	private final MovieService movieService;
+	private final TMDBService tmdbService;
 
-	// @GetMapping("/search")
-	// public List<MovieDto> search(@RequestParam(name = "keyword") String keyword) {
-	// 	return movieService.search(keyword);
-	// }
+	@GetMapping("/nowPlaying")
+	public String getNowPlaying(@RequestParam int pageNum) throws JsonProcessingException {
+		NowPlayingResponse nowPlayingResponse = tmdbService.getNowPlaying(pageNum);
 
+		return "pageName";
+	}
+
+	@GetMapping("/details")
+	public String getDetails(@RequestParam Long movieId) throws JsonProcessingException {
+
+		TMDBDetailsDto tmdbDetailsDto = tmdbService.getDetails(movieId);
+
+		return "test";
+	}
 }
