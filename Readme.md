@@ -1,5 +1,5 @@
-# RecoMovie
 
+![3333](https://github.com/user-attachments/assets/bd85cf00-5ed0-403d-87f2-9b4918a698b9)
 ## 프로젝트 소개
 
 ### 주제
